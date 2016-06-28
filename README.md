@@ -1,6 +1,8 @@
 # Artifact Variables
 
-This is a task for TFS to provide basic support for [Artifact Variables](https://www.visualstudio.com/en-us/docs/release/author-release-definition/understanding-artifacts#artifact-variables)
+This is a task for TFS to provide basic support for [Artifact Variables](https://www.visualstudio.com/en-us/docs/release/author-release-definition/understanding-artifacts#artifact-variables).
+
+**Artifact Variables** are not available in TFS 2015 and are currently due for release in TFS 2016.
 
 It makes the following variables available for each of the linked artifacts:
 
