@@ -38,7 +38,7 @@
             "label": "TFS Rest Api Password",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Provide a password to a user that has acecss to the TFS rest Api."
+            "helpMarkDown": "Provide a password to a user that has access to the TFS rest Api."
         }        
     ],
     "execution": {
