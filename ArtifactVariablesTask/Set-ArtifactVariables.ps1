@@ -11,10 +11,8 @@ Write-Host "variablePrefix = $variableprefix" -Verbose
 $tfsTeamProject = $Env:System_TeamProject
 $tfsReleaseId = $Env:Release_ReleaseId
 $tfsUri = $Env:SYSTEM_TEAMFOUNDATIONSERVERURI + $tfsTeamProject
-
-Write-Host "System_TeamFoundationServerUri = $tfsUri" -Verbose
-
 $uri = $tfsUri + "/_apis/release/releases/" + $tfsReleaseId + "?api-version=2.2-preview.1"
+
 Write-Host "Uri = $uri"
 
 $securePassword = $tfsPassword | ConvertTo-SecureString -AsPlainText -Force   
