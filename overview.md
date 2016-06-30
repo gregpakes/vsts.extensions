@@ -10,3 +10,5 @@ This extension plugs this gap and creates some variables based on your artifacts
 - **Definition Name**: ReleaseArtifacts.{ArtifactName}.DefinitionName
 - **Build Number**: ReleaseArtifacts.{ArtifactName}.BuildNumber
 - **Build Id**: ReleaseArtifacts.{ArtifactName}.BuildId
+
+> NB. This task is only relevent for TFS 2015
