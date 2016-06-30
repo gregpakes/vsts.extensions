@@ -22,7 +22,7 @@ $response = Invoke-RestMethod -Method Get -ContentType application/json -Uri $ur
 
 $response.artifacts | ForEach-Object {
     $alias = $_.alias    
-    $prefix = "$($variableprefix)_$alias"
+    $prefix = "$($variableprefix).$alias"
 
     # DefinitionId
     Write-Host ("##vso[task.setvariable variable=$prefix.DefinitionId;]$($_.definitionReference.definition.id)")
