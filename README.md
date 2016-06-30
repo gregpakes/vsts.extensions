@@ -13,6 +13,8 @@ It makes the following variables available for each of the linked artifacts:
 
 Download from the market place: https://marketplace.visualstudio.com/items?itemName=gregpakes.artifact-variables
 
+> NB. This task is only relevent for TFS 2015
+
 ## Credit
 
 Icons made by [FreePik](http://www.freepik.com/)
