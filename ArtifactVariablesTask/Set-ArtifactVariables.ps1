@@ -38,6 +38,6 @@ $response.artifacts | ForEach-Object {
     Write-Host "Setting variable: [$prefix.BuildNumber] = $buildNumber" -Verbose
 
     # Build Id
-    Write-Host ("##vso[task.setvariable variable=$prefix.DefinitionName;]$($_.definitionReference.version.id)")
-    Write-Host "Setting variable: [$prefix.DefinitionName] = $($_.definitionReference.version.id)" -Verbose
+    Write-Host ("##vso[task.setvariable variable=$prefix.BuildId;]$($_.definitionReference.version.id)")
+    Write-Host "Setting variable: [$prefix.BuildId] = $($_.definitionReference.version.id)" -Verbose
 }     
