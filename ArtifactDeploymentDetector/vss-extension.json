@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "artifactdeploymentdetector",
-  "version": "0.1.8",
+  "version": "0.1.12",
   "name": "Artifact Deployment Detector",
   "scopes": [],
   "description": "Detects whether artifacts have been deployed before",
@@ -41,18 +41,18 @@
   },
   "links": {
     "getstarted": {
-      "uri": "https://bit.ly"
+      "uri": "https://github.com/gregpakes/vsts.extensions"
     },
     "support": {
-      "uri": "https://bit.ly"
+      "uri": "https://github.com/gregpakes/vsts.extensions"
     },
     "issues": {
-      "uri": "https://bit.ly"
+      "uri": "https://github.com/gregpakes/vsts.extensions"
     }
   },
   "repository": {
     "type": "git",
-    "uri": "https://bit.ly"
+    "uri": "https://github.com/gregpakes/vsts.extensions"
   },
   "branding": {
     "color": "rgb(220, 235, 252)",

@@ -4,9 +4,16 @@ Detects whether artifacts have been deployed before
 
 ### Quick steps to get started ###
 
-![](/static/images/Screen1.png)
+- Add the **Artifact Deployment Detector** task to your pipeline.
+- You can then access variables to find out if the artifact has been deployed before to this stage.
 
-//TODO:Add a walk-through of key features to your extension. See [Roll-up Board](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.RollUpBoard) for an example.
+EG.
+
+An example variable for an artifact called "MyArtifact" would be:
+
+RELEASE_ARTIFACTS_MYARTIFACT_PREVIOUSLYDEPLOYED and it will have a boolean value.
+
+You can then use the variable in further tasks to know whether the artifact has been deployed before.
 
 ### Known issue(s)
 
@@ -14,19 +21,7 @@ Detects whether artifacts have been deployed before
 
 ### Learn More
 
-The [source](//TODO:Point to your repo or remove this) to this extension is available. Feel free to take, fork, and extend.
-
-//TODO:Update the 3rd party notices file or remove the view notices reference.
-[View Notices](https://marketplace.visualstudio.com/_apis/public/gallery/publisher/gregpakes/extension/artifactdeploymentdetector/latest/assetbyname/ThirdPartyNotices.txt) for third party software included in this extension.
-
-### Minimum supported environments ###
-
-- Visual Studio Team Services
-
-### Contributors ###
-
-We thank the following contributor(s) for this extension: @TODO@-Add and credit contributors.
+The [source](https://github.com/gregpakes/vsts.extensions) to this extension is available. Feel free to take, fork, and extend.
 
 ### Feedback ###
-- Add a review below.
-- Send us an [email](mailto://TODO:Add your email address).
+- https://github.com/gregpakes/vsts.extensions

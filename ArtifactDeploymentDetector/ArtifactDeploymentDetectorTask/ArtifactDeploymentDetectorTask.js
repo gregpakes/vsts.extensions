@@ -58,7 +58,7 @@ function getArtifactArray(artifacts) {
             "artifactAlias": artifact.alias,
             "buildDefinitionId": artifact.definitionReference.definition.id,
             "buildNumber": artifact.definitionReference.version.name,
-            "shouldDeploy": true
+            "previouslyDeployed": false
         });
     }
     return result;
@@ -111,20 +111,20 @@ function run() {
                     for (var artifactInCurrentRelease of arifactsInThisRelease) {
                         console.log(`Looking for artifact ${artifactInCurrentRelease.buildNumber} in previous successful deployments...`);
                         for (var deployment of successfulDeployments) {
-                            if (artifactInCurrentRelease.shouldDeploy) {
+                            if (!artifactInCurrentRelease.previouslyDeployed) {
                                 console.log(`Searching for artifact ${artifactInCurrentRelease.buildNumber} in release ${deployment.release.name}`);
                                 var artifactsInDeployment = getArtifactArray(deployment.release.artifacts);
                                 for (var artifactInDeployment of artifactsInDeployment) {
                                     if (artifactInCurrentRelease.buildDefinitionId === artifactInDeployment.buildDefinitionId &&
                                         artifactInCurrentRelease.buildNumber === artifactInDeployment.buildNumber) {
                                         console.log(`Found artifact ${artifactInCurrentRelease.buildNumber} deployed in ${deployment.release.name}`);
-                                        artifactInCurrentRelease.shouldDeploy = false;
+                                        artifactInCurrentRelease.previouslyDeployed = true;
                                         break;
                                     }
                                 }
                             }
                             else {
-                                console.log(`Skipping remaining releases because the property shouldDeploy for artifact ${artifactInCurrentRelease.buildNumber} was false.`);
+                                console.log(`Skipping remaining releases because the property previouslyDeployed for artifact ${artifactInCurrentRelease.buildNumber} was false.`);
                                 break;
                             }
                         }
@@ -132,13 +132,13 @@ function run() {
                 }
                 else {
                     // There are no successful releases - we need to add all the artifacts
-                    tl.debug(`Past successful releases for id ${releaseDefinitionId} and environment id ${releaseDefinitionEnvironmentId} not found.`);
+                    console.log(`Past successful releases for id ${releaseDefinitionId} and environment id ${releaseDefinitionEnvironmentId} not found.`);
                 }
                 for (var artifactInCurrentRelease of arifactsInThisRelease) {
                     var safeAlias = artifactInCurrentRelease.artifactAlias.replace(/\./gi, '_');
-                    var variableName = ('RELEASE_ARTIFACTS_' + safeAlias + '_ShouldDeploy').toUpperCase();
-                    tl.debug(`Setting variable ${variableName} with value ${artifactInCurrentRelease.shouldDeploy}`);
-                    tl.setVariable(variableName, artifactInCurrentRelease.shouldDeploy.toString());
+                    var variableName = ('RELEASE_ARTIFACTS_' + safeAlias + '_PreviouslyDeployed').toUpperCase();
+                    console.log(`Setting variable ${variableName} with value ${artifactInCurrentRelease.previouslyDeployed}`);
+                    tl.setVariable(variableName, artifactInCurrentRelease.previouslyDeployed.toString());
                 }
             }
             else {

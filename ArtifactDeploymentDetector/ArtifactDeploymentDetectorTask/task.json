@@ -3,14 +3,14 @@
    "name": "ArtifactDeploymentDetectorTask",
    "friendlyName": "Artiface Deployment Detector",
    "description": "Detects whether each artifact has already been deployed",
-   "helpMarkDown": "[More Information](https://url.to/yourmarkdown)",
+   "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
    "category": "Deploy",
    "visibility": ["Release"],
    "author": "Greg Pakes",
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 1
+      "Patch": 4
    },
    "demands": [],
    "inputs": [],
