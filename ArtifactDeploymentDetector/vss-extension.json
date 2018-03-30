@@ -1,13 +1,13 @@
 {
   "manifestVersion": 1,
   "id": "artifactdeploymentdetector",
-  "version": "0.1.12",
+  "version": "0.1.15",
   "name": "Artifact Deployment Detector",
   "scopes": [],
   "description": "Detects whether artifacts have been deployed before",
   "publisher": "gregpakes",
   "galleryFlags": [
-    "Preview"
+    "public"
   ],
   "icons": {
     "default": "static/images/logo.png"

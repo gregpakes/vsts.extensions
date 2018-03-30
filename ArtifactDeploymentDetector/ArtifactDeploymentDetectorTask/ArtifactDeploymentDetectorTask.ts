@@ -2,7 +2,7 @@ var path = require('path');
 import tl = require('vsts-task-lib/task');
 require('vso-node-api')
 import * as vstsInterfaces from 'vso-node-api/interfaces/common/VsoBaseInterfaces';
-import { Artifact, ReleaseExpands, DeploymentStatus, ApprovalFilters, DeploymentOperationStatus, ReleaseQueryOrder } from 'vso-node-api/interfaces/ReleaseInterfaces';
+import { Artifact, ReleaseExpands, DeploymentStatus, ApprovalFilters, DeploymentOperationStatus, ReleaseQueryOrder, ReleaseStatus } from 'vso-node-api/interfaces/ReleaseInterfaces';
 import * as webApi from 'vso-node-api/WebApi';
 import { IReleaseApi } from 'vso-node-api/ReleaseApi'
 import { release } from 'os';
@@ -122,11 +122,24 @@ async function run() : Promise<void>  {
             console.log(`Found ${arifactsInThisRelease.length}`)
 
             if (successfulDeployments && successfulDeployments.length > 0)
-            {
+            {                
                 // loop through every artifact in this release
                 for(var artifactInCurrentRelease of arifactsInThisRelease){
                     console.log(`Looking for artifact ${artifactInCurrentRelease.buildNumber} in previous successful deployments...`)
                     for(var deployment of successfulDeployments){
+
+                        // We need to check the status of this release
+                        var releaseForDeployment = await releaseApi.getRelease(teamProject, deployment.release.id).catch((reason) => {
+                            reject(reason);
+                            return;
+                        });
+
+                        if (releaseForDeployment && releaseForDeployment.status != ReleaseStatus.Active){
+                            // the release is not active
+                            console.log(`Skipping this deployment because release [${deployment.release.name}] has a status of [${ReleaseStatus[releaseForDeployment.status]}]`);
+                            continue;
+                        }
+
                         if (!artifactInCurrentRelease.previouslyDeployed){
                             console.log(`Searching for artifact ${artifactInCurrentRelease.buildNumber} in release ${deployment.release.name}`)
                             var artifactsInDeployment = getArtifactArray(deployment.release.artifacts);
