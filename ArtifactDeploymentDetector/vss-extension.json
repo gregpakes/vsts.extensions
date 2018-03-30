@@ -26,11 +26,7 @@
   "categories": [
     "Build and release"
   ],
-  "screenshots": [
-    {
-      "path": "static/images/screen1.png"
-    }
-  ],
+  "screenshots": [ ],
   "content": {
     "license": {
       "path": "license.md"
