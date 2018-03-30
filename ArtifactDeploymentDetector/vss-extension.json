@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "artifactdeploymentdetector",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "name": "Artifact Deployment Detector",
   "scopes": [],
   "description": "Detects whether artifacts have been deployed before",
