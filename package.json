@@ -8,7 +8,7 @@
     "install": "node make.js install",
     "build": "node make.js build",
     "package": "node make.js package",
-    "publish": "node make.js publish",
+    "publish": "node --inspect-brk=9229 --nolazy make.js publish",
     "test": "test"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "minimist": "^1.2.0",
     "path": "^0.12.7",
     "semver": "^5.5.0",
+    "semver-regex": "^2.0.0",
     "shelljs": "^0.3.0",
     "tfx-cli": "^0.5.10",
     "validator": "^9.4.1",

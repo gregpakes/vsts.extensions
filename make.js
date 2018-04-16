@@ -20,6 +20,7 @@ var path = require('path');
 var util = require('./make-util');
 var semver = require('semver');
 var ToolRunner = require('vsts-task-lib/toolrunner');
+const semverRegex = require('semver-regex');
 
 var banner = util.banner;
 var miniBanner = util.miniBanner;
@@ -178,16 +179,15 @@ target.publish = function(){
         console.log(`Publishing [${vsix}]`);
 
         // extract the version of the vsix
-        var pattern = /(\d+\.)(\d+\.)(\d)/g
-        var versionFromVsix = vsix.match(pattern) || [""];
+        var versionFromVsix = semverRegex().exec(vsix)[0];
 
         console.log(`Checking to see if this version is already published...`);
-        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
+        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname });
         const json = JSON.parse(output);
         var version = json.versions[0].version;
 
-        console.log(`Latest version   : ${version}.`);
-        console.log(`Requested action : ${versionFromVsix}.`);
+        console.log(`Latest version   : ${version}`);
+        console.log(`Requested action : ${versionFromVsix}`);
 
         if (version !== versionFromVsix){
             util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
