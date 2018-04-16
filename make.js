@@ -177,6 +177,22 @@ target.publish = function(){
     vsixFiles.forEach(function (vsix){
         console.log(`Publishing [${vsix}]`);
 
-        util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' })
+        // extract the version of the vsix
+        var pattern = /(\d+\.)(\d+\.)(\d)/g
+        var versionFromVsix = vsix.match(pattern) || [""];
+
+        console.log(`Checking to see if this version is already published...`);
+        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
+        const json = JSON.parse(outputStream.jsonString);
+        var version = json.versions[0].version;
+
+        console.log(`Latest version   : ${version}.`);
+        console.log(`Requested action : ${versionFromVsix}.`);
+
+        if (version !== versionFromVsix){
+            util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
+        }else{
+            console.log('Skipping as it already exists in the marketplace.')
+        }
     });
 }
