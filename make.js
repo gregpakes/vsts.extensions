@@ -5,7 +5,8 @@ var minimist = require('minimist');
 var mopts = {
     string: [
         'extension',
-        'token'
+        'token',
+        'artifactsPath'
     ]
 };
 var options = minimist(process.argv, mopts);
@@ -161,9 +162,14 @@ target.package = function(){
 }
 
 target.publish = function(){
-    ensureExists(outDir);
 
-    var vsixFiles = matchFind("*.vsix", outDir, { noRecurse: true, matchBase: true })
+    if (!options.artifactsPath){
+        throw "You have not supplied the ArtifactsPath argument"
+    }
+
+    ensureExists(options.artifactsPath);
+
+    var vsixFiles = matchFind("*.vsix", options.artifactsPath, { noRecurse: true, matchBase: true })
         .map(function (item) {
             return item;
         });
