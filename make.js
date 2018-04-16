@@ -183,7 +183,7 @@ target.publish = function(){
 
         console.log(`Checking to see if this version is already published...`);
         var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
-        const json = JSON.parse(outputStream.jsonString);
+        const json = JSON.parse(output.jsonString);
         var version = json.versions[0].version;
 
         console.log(`Latest version   : ${version}.`);
