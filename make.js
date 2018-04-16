@@ -4,7 +4,8 @@
 var minimist = require('minimist');
 var mopts = {
     string: [
-        'extension'
+        'extension',
+        'token'
     ]
 };
 var options = minimist(process.argv, mopts);
@@ -30,6 +31,7 @@ var getTaskVersions = util.getTaskVersions;
 var getTasks = util.getTasks;
 var run = util.run;
 var rm = util.rm;
+var ensureExists = util.ensureExists
 
 // global variables
 var extensionsPath = path.join(__dirname, 'Extensions');
@@ -155,5 +157,20 @@ target.package = function(){
         }catch(error){
             fail(error);
         }
+    });
+}
+
+target.publish = function(){
+    ensureExists(outDir);
+
+    var vsixFiles = matchFind("*.vsix", outDir, { noRecurse: true, matchBase: true })
+        .map(function (item) {
+            return item;
+        });
+
+    vsixFiles.forEach(function (vsix){
+        console.log(`Publishing [${vsix}]`);
+
+        util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' })
     });
 }

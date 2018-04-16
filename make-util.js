@@ -116,6 +116,16 @@ var ensureTool = function (name, versionArgs, validate) {
 }
 exports.ensureTool = ensureTool;
 
+var ensureExists = function (checkPath) {
+    assert(checkPath, 'checkPath');
+    var exists = test('-d', checkPath) || test('-f', checkPath);
+
+    if (!exists) {
+        fail(checkPath + ' does not exist');
+    }
+}
+exports.ensureExists = ensureExists;
+
 var run = function (cl, options, noHeader) {
     if (!noHeader) {
         console.log();

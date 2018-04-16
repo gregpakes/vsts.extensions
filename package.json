@@ -8,6 +8,7 @@
     "install": "node make.js install",
     "build": "node make.js build",
     "package": "node make.js package",
+    "publish": "node make.js publish",
     "test": "test"
   },
   "repository": {
