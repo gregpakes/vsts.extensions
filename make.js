@@ -182,7 +182,7 @@ target.publish = function(){
         var versionFromVsix = vsix.match(pattern) || [""];
 
         console.log(`Checking to see if this version is already published...`);
-        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
+        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
         const json = JSON.parse(output);
         var version = json.versions[0].version;
 
