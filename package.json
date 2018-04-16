@@ -1,0 +1,33 @@
+{
+  "name": "vsts.extensions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "make.js",
+  "scripts": {
+    "clean": "node make.js clean",
+    "install": "node make.js install",
+    "build": "node make.js build",
+    "package": "node make.js package",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregpakes/vsts.extensions.git"
+  },
+  "author": "Greg Pakes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gregpakes/vsts.extensions/issues"
+  },
+  "homepage": "https://github.com/gregpakes/vsts.extensions#readme",
+  "devDependencies": {
+    "minimatch": "^3.0.4",
+    "minimist": "^1.2.0",
+    "path": "^0.12.7",
+    "semver": "^5.5.0",
+    "shelljs": "^0.3.0",
+    "tfx-cli": "^0.5.10",
+    "validator": "^9.4.1",
+    "vsts-task-lib": "^2.4.0"
+  }
+}
