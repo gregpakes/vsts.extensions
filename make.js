@@ -182,7 +182,7 @@ target.publish = function(){
         var versionFromVsix = semverRegex().exec(vsix)[0];
 
         console.log(`Checking to see if this version is already published...`);
-        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname });
+        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname }, true);
         const json = JSON.parse(output);
         var version = json.versions[0].version;
 
@@ -190,7 +190,7 @@ target.publish = function(){
         console.log(`Requested action : ${versionFromVsix}`);
 
         if (version !== versionFromVsix){
-            util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' });
+            util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' }, true);
         }else{
             console.log('Skipping as it already exists in the marketplace.')
         }
