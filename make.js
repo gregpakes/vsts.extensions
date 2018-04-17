@@ -176,7 +176,7 @@ target.publish = function(){
         });
 
     vsixFiles.forEach(function (vsix){
-        console.log(`Publishing [${vsix}]`);
+        banner(`Publishing [${vsix}]`);
 
         // extract the version of the vsix
         var versionFromVsix = semverRegex().exec(vsix)[0];
