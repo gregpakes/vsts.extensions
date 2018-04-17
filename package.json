@@ -8,7 +8,7 @@
     "install": "node make.js install",
     "build": "node make.js build",
     "package": "node make.js package",
-    "publish": "node --inspect-brk=9229 --nolazy make.js publish",
+    "publish": "node make.js publish",
     "test": "test"
   },
   "repository": {
