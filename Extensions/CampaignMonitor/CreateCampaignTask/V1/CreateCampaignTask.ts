@@ -58,19 +58,6 @@ async function run(): Promise<number>  {
             const fromName: string = tl.getInput("CampaignMonitorFromName");
             const singleLines: string = tl.getInput("CampaignMonitorSingleLines");
 
-            console.log(`authenticationType: ${authenticationType}`);
-            console.log(`apiKey: ${apiKey}`);
-            console.log(`authToken: ${authToken}`);
-            console.log(`clientId: ${clientId}`);
-            console.log(`listId: ${listId}`);
-            console.log(`templateId: ${templateId}`);
-            console.log(`fromEmailAddress: ${fromEmailAddress}`);
-            console.log(`replyToEmailAddress: ${replyToEmailAddress}`);
-            console.log(`campaignName: ${campaignName}`);
-            console.log(`campaignSubject: ${campaignSubject}`);
-            console.log(`previewRecipients: ${previewRecipients}`);
-            console.log(`fromName: ${fromName}`);
-
             var opts = {};
 
             if (authenticationType.toLowerCase() === "apikey") {
@@ -157,7 +144,7 @@ async function run(): Promise<number>  {
 
 run()
     .then((result) => {
-            tl.setVariable("CampaignMonitor.CampaignId", result.toString());
+            tl.setVariable("CampaignMonitorCampaignId", result.toString());
             tl.setResult(tl.TaskResult.Succeeded, "");
         }
     )
