@@ -114,17 +114,17 @@ async function run(): Promise<number>  {
                 }
             };
 
-            tl.debug(`Creating campaign...`);
+            console.log(`Creating campaign...`);
             await api.campaigns.createFromTemplate(clientId, details, async (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);
                 } else {
                     var campaignId = res.campaignId;
-                    tl.debug(`Campaign created successfully with Id [${campaignId}]`);
+                    console.log(`Campaign created successfully with Id [${campaignId}]`);
 
                     if (previewRecipients) {
-                        tl.debug(`Sending Preview...`);
+                        console.log(`Sending Preview...`);
                         var parsedRecipients = previewRecipients.split(",");
 
                         var previewDetails = {
@@ -137,7 +137,7 @@ async function run(): Promise<number>  {
                                 console.log(err);
                                 reject(err);
                             } else {
-                                tl.debug(`Preview sent`);
+                                console.log(`Preview sent`);
                                 resolve(campaignId);
                             }
                         });
