@@ -10,14 +10,14 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 1
+      "Patch": 2
    },
    "demands": [],
    "inputs": [
         {
             "name": "CampaignMonitorClientId",
             "type": "string",
-            "label": "Campaign Monitor Client Id",
+            "label": "Client Id",
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "The Client Id for CampaignMonitor"
@@ -55,18 +55,18 @@
         {
             "name": "CampaignMonitorListId",
             "type": "string",
-            "label": "Campaign Monitor List Id",
+            "label": "List Id",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "The List Id for CampaignMonitor"
+            "helpMarkDown": "The List Id for list within CampaignMonitor you wish to use."
         },
         {
             "name": "CampaignMonitorTemplateId",
             "type": "string",
-            "label": "Campaign Monitor Template Id",
+            "label": "Template Id",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "The Template Id for the email"
+            "helpMarkDown": "The Template Id for the template you wish to use in CampaignMonitor"
         },
         {
             "name": "CampaignMonitorFromEmailAddress",
@@ -95,7 +95,7 @@
         {
             "name": "CampaignMonitorCampaignSubject",
             "type": "string",
-            "label": "Campaign Email Subject",
+            "label": "Email Subject",
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "The campaign email subject"

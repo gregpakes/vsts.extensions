@@ -1,10 +1,10 @@
 {
   "manifestVersion": 1,
   "id": "campaignmonitor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "Campaign Monitor Tasks",
   "scopes": [],
-  "description": "various tasks for using Campaign Monitor",
+  "description": "Various tasks for using Campaign Monitor",
   "publisher": "gregpakes",
   "galleryFlags": [
     "public"
