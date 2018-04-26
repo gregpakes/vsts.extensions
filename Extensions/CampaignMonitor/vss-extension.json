@@ -1,16 +1,16 @@
 {
   "manifestVersion": 1,
-  "id": "artifactdeploymentdetector",
-  "version": "0.1.17",
-  "name": "Artifact Deployment Detector",
+  "id": "campaignmonitor",
+  "version": "0.0.1",
+  "name": "Campaign Monitor Tasks",
   "scopes": [],
-  "description": "Detects whether artifacts have been deployed before",
+  "description": "various tasks for using Campaign Monitor",
   "publisher": "gregpakes",
   "galleryFlags": [
     "public"
   ],
   "icons": {
-    "default": "static/images/logo.png"
+    "default": "static/images/campaignmonitor.jpg"
   },
   "targets": [
     {
@@ -56,18 +56,18 @@
   },
   "files": [
     {
-      "path": "ArtifactDeploymentDetectorTask"
+      "path": "CreateCampaignTask"
     }
   ],
   "contributions": [
     {
-      "id": "ArtifactDeploymentDetectorTask",
+      "id": "CampaignMonitor",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "type": "ms.vss-distributed-task.task",
       "properties": {
-        "name": "ArtifactDeploymentDetectorTask"
+        "name": "CreateCampaignTask"
       }
     }
   ]

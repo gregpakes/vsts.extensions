@@ -126,10 +126,14 @@ var ensureExists = function (checkPath) {
 }
 exports.ensureExists = ensureExists;
 
-var run = function (cl, options, noHeader) {
+var run = function (cl, options, noHeader, continueOnError) {
     if (!noHeader) {
         console.log();
         console.log('> ' + cl);
+    }
+
+    if (!continueOnError){
+        continueOnError = false;
     }
 
     var rc = 0;
@@ -142,7 +146,11 @@ var run = function (cl, options, noHeader) {
             console.error(err.output ? err.output.toString() : err.message);
         }
 
-        process.exit(1);
+        if (!continueOnError){
+            process.exit(1);
+        } else {
+            output = err.output ? err.output.toString() : err.message;
+        }
     }
 
     return (output || '').toString().trim();
@@ -249,7 +257,7 @@ exports.getTasks = getTasks;
 var getTaskVersions = function(currentTaskPath){
     return matchFind("V*", currentTaskPath, { noRecurse: true, matchBase: true })
         .map(function (item) {
-            return path.basename(item);
+            return item;
         });
 };
 exports.getTaskVersions = getTaskVersions;

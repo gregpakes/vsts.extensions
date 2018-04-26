@@ -1,12 +1,12 @@
-
-
 // parse command line options
 var minimist = require('minimist');
+var editJsonFile = require("edit-json-file");
 var mopts = {
     string: [
         'extension',
         'token',
-        'artifactsPath'
+        'artifactsPath',
+        'suite'
     ]
 };
 var options = minimist(process.argv, mopts);
@@ -37,7 +37,9 @@ var ensureExists = util.ensureExists
 
 // global variables
 var extensionsPath = path.join(__dirname, 'Extensions');
-var outDir = path.join(__dirname, "_outdir");
+var buildPath = path.join(__dirname, '_build', 'Tasks');
+var buildTestsPath = path.join(__dirname, '_build', 'Tests');
+var outDir = path.join(__dirname, '_build', "Outdir");
 
 // node min version
 var minNodeVer = '6.10.3';
@@ -49,12 +51,12 @@ if (semver.lt(process.versions.node, minNodeVer)) {
 var extensionList;
 if (options.extension) {
     // find using --extension parameter
-    extensionList = matchFind(options.extension, tasksPath, { noRecurse: true, matchBase: true })
+    extensionList = matchFind(options.extension, extensionsPath, { noRecurse: true, matchBase: true, nocase: true })
         .map(function (item) {
             return item;
         });
     if (!extensionList.length) {
-        fail('Unable to find any tasks matching pattern ' + options.task);
+        fail('Unable to find any extensions matching pattern ' + options.extension);
     }
 }
 else {
@@ -154,23 +156,53 @@ target.package = function(){
         // create extension
         console.log('Creating extension')
         try{
+            // Create the standard one
+            console.log('Packaging release version');
             var extensionPath = path.join(currentExtensionPath, 'vss-extension.json');
-            util.run(`tfx extension create --manifest-globs ${extensionPath} --root ${currentExtensionPath} --output-path ${outDir}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' })
-        }catch(error){
+            var originalManifest = editJsonFile(extensionPath);
+            try {                
+                var manifest = editJsonFile(extensionPath);
+                manifest.set("galleryFlags", ["public"])
+                manifest.save();
+                util.run(`tfx extension create --manifest-globs ${extensionPath} --root ${currentExtensionPath} --output-path ${path.join(outDir, "public")}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' })
+            
+                // Create the preview version
+                console.log('Packaging preview version');
+                manifest = editJsonFile(extensionPath);
+                manifest.set("id", manifest.get('id') + '-preview');
+                manifest.set("name", 'Preview: ' + manifest.get('name'));
+                manifest.set("galleryFlags", ["preview"])
+                manifest.save();
+                util.run(`tfx extension create --manifest-globs ${extensionPath} --root ${currentExtensionPath} --output-path ${path.join(outDir, "preview")}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' })
+            } finally {
+                // ensure the manifest is reset
+                originalManifest.save();
+            }
+        } catch(error) {
             fail(error);
         }
     });
 }
 
-target.publish = function(){
+target.publishPreview = function(){
+    publish("preview");
+}
 
+target.publishLive = function(){
+    publish("public");
+}
+
+function publish(publishType) {
     if (!options.artifactsPath){
-        throw "You have not supplied the ArtifactsPath argument"
+        console.log('ArtifactsPath was not supplied - using the standard OutDir');
+        options.artifactsPath = outDir;
     }
+
+    console.log(`Token: ${options.token}`)
 
     ensureExists(options.artifactsPath);
 
-    var vsixFiles = matchFind("*.vsix", options.artifactsPath, { noRecurse: true, matchBase: true })
+    var vsixFiles = matchFind("*.vsix", path.join(options.artifactsPath, publishType), { noRecurse: true, matchBase: true })
         .map(function (item) {
             return item;
         });
@@ -182,17 +214,60 @@ target.publish = function(){
         var versionFromVsix = semverRegex().exec(vsix)[0];
 
         console.log(`Checking to see if this version is already published...`);
-        var output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname }, true);
-        const json = JSON.parse(output);
-        var version = json.versions[0].version;
+        var version = "0.0.0";
+        var output;
+        
+        output = util.run(`tfx extension show --vsix ${vsix} --token ${options.token} --json`,  { env: process.env, cwd: __dirname }, true, true);
+        try { 
+            const json = JSON.parse(output);
+            version = json.versions[0].version;
+        } catch (err) {
+            // Failed to parse the JSON - no JSON was returned.  This means the extension probably doesn't exist.
+            if (output.indexOf('404') == -1 && output.indexOf('doesn\'t exist') == -1){
+                throw `Unknown error thrown from TFX: ${err}`;
+            }
+        }
 
         console.log(`Latest version   : ${version}`);
         console.log(`Requested action : ${versionFromVsix}`);
 
+        // We used to use the override object to override the galleryFlags, but we now do that in the build.
+        // i am keeping this code here as it may be useful for other overrides.
+        var overrideObject = {
+        };
+
+        var overrideString = JSON.stringify(overrideObject).replace(/\"/g, '\\"');
+
         if (version !== versionFromVsix){
-            util.run(`tfx extension publish --vsix ${vsix} --token ${options.token}`,  { env: process.env, cwd: __dirname, stdio: 'inherit' }, true);
+            util.run(`tfx extension publish --vsix "${vsix}" --token ${options.token} --override "${overrideString}"`,  { env: process.env, cwd: __dirname, stdio: 'inherit' }, true);
         }else{
             console.log('Skipping as it already exists in the marketplace.')
         }
     });
+}
+
+//
+// will run tests for the scope of tasks being built
+// npm test
+// node make.js test
+// node make.js test --extension CampaignMonitor --suite L0
+//
+target.test = function() {
+    
+    rm('-Rf', buildPath);
+    mkdir('-p', path.join(buildPath));
+    rm('-Rf', buildTestsPath);
+    mkdir('-p', path.join(buildTestsPath));
+
+    // find the tests
+    var suiteType = options.suite || 'L0';
+    var extenionName = options.extension || '*';
+    var pattern1 = buildPath + '/' + extenionName + '/Tests/' + suiteType + '.js';
+    var pattern3 = buildTestsPath + '/' + suiteType + '.js';
+    var testsSpec = matchFind(pattern1, buildPath)
+        .concat(matchFind(pattern3, buildTestsPath, { noRecurse: true }));
+
+
+    run('jest ' + testsSpec.join(' '), /*inheritStreams:*/true);
+
 }

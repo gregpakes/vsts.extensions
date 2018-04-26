@@ -1,53 +1,55 @@
 {
-    "manifestVersion": 1,
-    "id": "artifact-variables",
-    "version": "0.1.21",
-    "name": "Set Artifact Variables",
-    "publisher": "gregpakes",
-    "description": "Gives basic Artifact Variables functionality to TFS 2015",
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "files":[
-        {
-            "path": "ArtifactVariablesTask"
-        }        
-    ],
-    "categories": [
-        "Build and release"
-    ],
-    "tags": [
-        "artifact variables"
-    ],
-    "public": true,
-    "icons": {
-        "default": "extension-icon.png"
-    },
-    "contributions": [
-        {
-            "id": "artifactvariables-task",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "ArtifactVariablesTask"
-            }
-        }
-    ],
-    "links":{
-        "home":{
-            "uri": "https://www.gregpakes.co.uk"
-        },
-        "getstarted": {
-            "uri": "https://github.com/gregpakes/ArtifactVariables"
-        }
-    },
-    "content":{
-        "details": {
-            "path": "overview.md"
-        }
+  "manifestVersion": 1,
+  "id": "artifact-variables",
+  "version": "0.1.21",
+  "name": "Set Artifact Variables",
+  "publisher": "gregpakes",
+  "description": "Gives basic Artifact Variables functionality to TFS 2015",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
     }
+  ],
+  "galleryFlags": [
+    "public"
+  ],
+  "files": [
+    {
+      "path": "ArtifactVariablesTask"
+    }
+  ],
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "artifact variables"
+  ],
+  "icons": {
+    "default": "extension-icon.png"
+  },
+  "contributions": [
+    {
+      "id": "artifactvariables-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "ArtifactVariablesTask"
+      }
+    }
+  ],
+  "links": {
+    "home": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    },
+    "getstarted": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    }
+  },
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  }
 }
