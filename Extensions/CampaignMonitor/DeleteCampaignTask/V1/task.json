@@ -1,0 +1,30 @@
+{
+   "id": "2148d21b-683e-4ca3-b51b-c696c7eab2ae",
+   "name": "DeleteCampaignTask",
+   "friendlyName": "Delete Campaign",
+   "description": "Deletes a campaign within Campaign Monitor",
+   "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
+   "category": "Deploy",
+   "visibility": ["Release"],
+   "author": "Greg Pakes",
+   "version": {
+      "Major": 0,
+      "Minor": 0,
+      "Patch": 1
+   },
+   "demands": [],
+   "inputs": [
+        {
+            "name": "Campaign Id",
+            "type": "string",
+            "label": "Client Id",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The Client Id for CampaignMonitor"
+        }
+    ],
+    "outputVariables": [],
+    "instanceNameFormat": "Delete Campaign",
+    "execution":
+        {"Node":{"target":"CreateCampaignTask.js"}}
+}

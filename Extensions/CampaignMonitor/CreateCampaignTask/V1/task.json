@@ -10,7 +10,7 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 5
+      "Patch": 6
    },
    "demands": [],
    "inputs": [
@@ -141,7 +141,7 @@
             "description": "The id of the created draft campaign."
         }
     ],
-    "instanceNameFormat": "CreateCampaignTask",
+    "instanceNameFormat": "Create Campaign",
     "execution":
         {"Node":{"target":"CreateCampaignTask.js"}}
 }
