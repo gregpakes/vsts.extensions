@@ -10,10 +10,40 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 1
+      "Patch": 2
    },
    "demands": [],
    "inputs": [
+        {
+            "name": "CampaignMonitorAuthenticationType",
+            "type": "pickList",
+            "label": "Authentication Type",
+            "defaultValue": "ApiKey",
+            "required": true,
+            "options": {
+                "ApiKey": "Api Key",
+                "AuthToken": "Auth Token"
+            },
+            "helpMarkDown": "Select the authentication type"
+        },
+        {
+            "name": "CampaignMonitorApiKey",
+            "type": "string",
+            "label": "Api Key",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The Api Key for CampaignMonitor",
+            "visibleRule": "CampaignMonitorAuthenticationType = ApiKey"
+        },
+        {
+            "name": "CampaignMonitorAuthToken",
+            "type": "string",
+            "label": "Auth Token",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The Auth Token for CampaignMonitor",
+            "visibleRule": "CampaignMonitorAuthenticationType = AuthToken"
+        },
         {
             "name": "Campaign Id",
             "type": "string",

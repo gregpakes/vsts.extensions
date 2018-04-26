@@ -1,7 +1,7 @@
 import tl = require("vsts-task-lib/task");
 
 var taskJson = require("./task.json");
-const area: string = "ArtifactDeploymentDetector";
+const area: string = "CreateCampaign";
 var createsend = require("createsend-node");
 
 function getDefaultProps() {

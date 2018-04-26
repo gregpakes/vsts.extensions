@@ -162,6 +162,8 @@ var buildExtension = function(extensionPath){
 
     banner(`Building Extension [${currentExtensionName}]`);
 
+    
+
     var taskList = getTasks(extensionPath);
 
     if (taskList.length){
