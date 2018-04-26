@@ -57,6 +57,9 @@
   "files": [
     {
       "path": "CreateCampaignTask"
+    },
+    {
+      "path": "DeleteCampaignTask"
     }
   ],
   "contributions": [
