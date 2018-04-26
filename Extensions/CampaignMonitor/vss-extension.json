@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "campaignmonitor",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "name": "Campaign Monitor Tasks",
   "scopes": [],
   "description": "Various tasks for using Campaign Monitor",
