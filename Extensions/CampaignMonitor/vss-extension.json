@@ -64,13 +64,23 @@
   ],
   "contributions": [
     {
-      "id": "CampaignMonitor",
+      "id": "CampaignMonitor-CreateCampaignTask",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "type": "ms.vss-distributed-task.task",
       "properties": {
         "name": "CreateCampaignTask"
+      }
+    },
+    {
+      "id": "CampaignMonitor-DeleteCampaignTask",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "type": "ms.vss-distributed-task.task",
+      "properties": {
+        "name": "DeleteCampaignTask"
       }
     }
   ]
