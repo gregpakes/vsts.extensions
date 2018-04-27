@@ -202,6 +202,8 @@ function publish(publishType) {
 
     ensureExists(options.artifactsPath);
 
+    var publishCount = 0;
+
     var vsixFiles = matchFind("*.vsix", path.join(options.artifactsPath, publishType), { noRecurse: true, matchBase: true })
         .map(function (item) {
             return item;
@@ -239,11 +241,16 @@ function publish(publishType) {
         var overrideString = JSON.stringify(overrideObject).replace(/\"/g, '\\"');
 
         if (version !== versionFromVsix){
+            publishCount++;
             util.run(`tfx extension publish --vsix "${vsix}" --token ${options.token} --override "${overrideString}"`,  { env: process.env, cwd: __dirname, stdio: 'inherit' }, true);
         }else{
             console.log('Skipping as it already exists in the marketplace.')
         }
     });
+
+    if (publishCount === 0) {
+        throw "No extensions were published.  Are you sure you bumped the version numbers?"
+    }
 }
 
 //
