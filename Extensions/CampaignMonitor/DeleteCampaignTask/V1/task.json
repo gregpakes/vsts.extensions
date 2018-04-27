@@ -10,7 +10,7 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 2
+      "Patch": 3
    },
    "demands": [],
    "inputs": [
@@ -56,5 +56,5 @@
     "outputVariables": [],
     "instanceNameFormat": "Delete Campaign",
     "execution":
-        {"Node":{"target":"CreateCampaignTask.js"}}
+        {"Node":{"target":"DeleteCampaignTask.js"}}
 }
