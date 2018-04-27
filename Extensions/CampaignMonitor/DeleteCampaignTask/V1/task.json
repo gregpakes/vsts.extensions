@@ -10,7 +10,7 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 3
+      "Patch": 4
    },
    "demands": [],
    "inputs": [
@@ -45,9 +45,9 @@
             "visibleRule": "CampaignMonitorAuthenticationType = AuthToken"
         },
         {
-            "name": "Campaign Id",
+            "name": "CampaignMonitorCampaignId",
             "type": "string",
-            "label": "Client Id",
+            "label": "Campaign Id",
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "The Client Id for CampaignMonitor"
