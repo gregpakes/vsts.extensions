@@ -3,6 +3,7 @@ import tl = require("vsts-task-lib/task");
 var taskJson = require("./task.json");
 const area: string = "CreateCampaign";
 var createsend = require("createsend-node");
+import * as fs from "fs";
 
 function getDefaultProps() {
     var hostType = (tl.getVariable("SYSTEM.HOSTTYPE") || "").toLowerCase();
@@ -57,6 +58,28 @@ async function run(): Promise<number>  {
             const previewRecipients: string = tl.getInput("CampaignMonitorPreviewRecipients");
             const fromName: string = tl.getInput("CampaignMonitorFromName");
             const singleLines: string = tl.getInput("CampaignMonitorSingleLines");
+            const multipleLinesSourceType: string = tl.getInput("CampaignMonitorMultipleLinesSourceType");
+            const multipleLinesInline: string = tl.getInput("CampaignMonitorMultipleLinesInline");
+            const multipleLinesFilePath: string = tl.getInput("CampaignMonitorMultipleLinesFilePath");
+
+            // Get the multiple lines text
+            let multipleLines: string;
+
+            switch (multipleLinesSourceType.toLowerCase()) {
+                case "inline":
+                    multipleLines = JSON.parse(multipleLinesInline);
+                    break;
+                case "file":
+                    if (!fs.existsSync(multipleLinesFilePath)) {
+                        reject(`Failed to locate the multiple lines file on disk ${multipleLinesFilePath}`);
+                        return;
+                    }
+
+                    multipleLines = JSON.parse(fs.readFileSync(multipleLinesFilePath, "utf8"));
+                    break;
+                default:
+                    throw "Failed to parse the argument [CampaignMonitorMultipleLinesSourceType], expected 'Inline' or 'File'.";
+            }
 
             var opts = {};
 
@@ -94,9 +117,7 @@ async function run(): Promise<number>  {
                 "ListIDs": [listId], // array of lists to send the campaign to
                 "TemplateID": templateId,     // id of the template
                 "TemplateContent": {        // only an example, follow the instructions at https://www.campaignmonitor.com/api/campaigns/#creating-campaign-template to match your template
-                    "Multilines": [{
-                        "Content": "string"
-                    }],
+                    "Multilines": multipleLines,
                     "Singlelines": JSON.parse(singleLines)
                 }
             };

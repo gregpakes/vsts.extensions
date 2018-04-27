@@ -10,7 +10,7 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 9
+      "Patch": 10
    },
    "demands": [],
    "inputs": [
@@ -107,7 +107,35 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "The JSON object for the single lines object.  Example: [{ \"Content\": \"Support Centre\" }]"
-        },        
+        },     
+        {
+            "name": "CampaignMonitorMultipleLinesSourceType",
+            "type": "pickList",
+            "label": "Multiple Lines Source",
+            "helpMarkDown": "The source for the Multiple Lines text.",
+            "options": {
+                "Inline": "Inline",
+                "File": "File"
+            }
+        },
+        {
+            "name": "CampaignMonitorMultipleLinesInline",
+            "type": "multiLine",
+            "label": "Multiple Lines",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The JSON object for the multiple lines object.  Example: [{ \"Content\": \"<p>Hello</p>\" }]",
+            "visibleRule": "CampaignMonitorMultipleLinesSourceType = Inline"
+        },
+        {
+            "name": "CampaignMonitorMultipleLinesFilePath",
+            "type": "filePath",
+            "label": "Multiple Lines",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The path to the JSON file that contains the mutiple lines text.",
+            "visibleRule": "CampaignMonitorMultipleLinesSourceType = File"
+        },   
         {
             "name": "CampaignMonitorFromName",
             "type": "string",
