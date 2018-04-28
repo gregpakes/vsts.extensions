@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "campaignmonitor",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "name": "Campaign Monitor Tasks",
   "scopes": [],
   "description": "Various tasks for using Campaign Monitor",
@@ -64,7 +64,8 @@
   ],
   "contributions": [
     {
-      "id": "CampaignMonitor-CreateCampaignTask",
+      "id": "CreateCampaignTask",
+      "description": "Create a draft campaign in campaignmonitor",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
@@ -74,7 +75,8 @@
       }
     },
     {
-      "id": "CampaignMonitor-DeleteCampaignTask",
+      "id": "DeleteCampaignTask",
+      "description": "Delete a draft campaign in campaignmonitor",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
