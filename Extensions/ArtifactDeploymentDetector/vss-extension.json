@@ -21,7 +21,9 @@
     "api-version/3.0"
   ],
   "tags": [
-    "Sample"
+    "Artifact",
+    "Deployed Artifact",
+    "Artifact deployment"
   ],
   "categories": [
     "Build and release"
