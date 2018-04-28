@@ -11,7 +11,7 @@ A series of tasks for interacting with Campaign Montitor.
 
 This task creates a campaign from an existing template.
 
-![Screenshot](https://raw.githubusercontent.com/gregpakes/vsts.extensions/master/extensions/campaignmonitor/screenshots/createcampaign.png)
+![Screenshot](https://raw.githubusercontent.com/gregpakes/vsts.extensions/master/Extensions/CampaignMonitor/screenshots/createcampaign.PNG)
 
 **Configuration Options**
 
@@ -37,7 +37,7 @@ This task creates a campaign from an existing template.
 
 This task deletes a campaign given a campaign id.
 
-![Screenshot](https://raw.githubusercontent.com/gregpakes/vsts.extensions/master/extensions/campaignmonitor/screenshots/deletecampaign.png)
+![Screenshot](https://raw.githubusercontent.com/gregpakes/vsts.extensions/master/Extensions/CampaignMonitor/screenshots/deletecampaign.PNG)
 
 **Configuration Options**
 
