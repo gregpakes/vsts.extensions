@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "campaignmonitor",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "name": "Campaign Monitor Tasks",
   "scopes": [],
   "description": "Various tasks for using Campaign Monitor",
@@ -24,8 +24,7 @@
     "CampaignMonitor",
     "Campaign Monitor",
     "CreateSend",
-    "Create Send",
-    ""
+    "Create Send"
   ],
   "categories": [
     "Build and release"
