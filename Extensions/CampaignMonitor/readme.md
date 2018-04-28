@@ -21,7 +21,7 @@ This task creates a campaign from an existing template.
 * **Reply To Email Address**
 * **Campaign Name**: The name of the campaign you wish to send.  This must be unique.
 * **Email Subject**
-* **Single Lines**: JSON representation for floating *singleline* tags.  Example: [{ "Content": "Support Centre" }, { "Content": "iSAMS Update - 0.0.1" }]
+* **Single Lines**: JSON representation for floating *singleline* tags.  Example: [{ "Content": "Support Centre" }, { "Content": "Co ntent goes here" }]
 * **MultipleLines**: JSON representation for floating *multipleline* tags.  Example: [{"Content": "&lt;p&gt;This is a test email.&lt;/p&gt; &lt;p&gt;This should be on another line.&lt;/p&gt;"}]
 * **MultipleLines Source**: Choose whether your multiplelines template is read from a file on disk or inline.
 * **From Name**
