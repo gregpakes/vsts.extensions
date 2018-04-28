@@ -1,6 +1,6 @@
 {
   "name": "task",
-  "version": "1.0.0",
+  "version": "0.0.14",
   "description": "package.json for task lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
