@@ -47,8 +47,11 @@ This task deletes a campaign given a campaign id.
 
 This task sends an existing draft campaign.  You can use the output "campaign id" from the Create Campaign task as input for this task.
 
+![Screenshot](https://raw.githubusercontent.com/gregpakes/vsts.extensions/master/Extensions/CampaignMonitor/screenshots/sendcampaign.PNG)
+
 **Configuration Options**
 
+* **Campaign Id**: The Id of the campaign to delete.
 * **Confirmation Email**: A comma seperated list of up to 5 email addresses for the confirmation to be sent to. (eg. user@domain.com,user2@domain.com)
 * **Send Immediately**: Whether to send the campaign immediately.
 * **Send Date Time**: The date the campaign should be scheduled to be sent. This date should be in the client's timezone and formatted as YYYY-MM-DD HH:MM.
