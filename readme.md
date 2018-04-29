@@ -6,17 +6,18 @@ This repository contains a number of separate extensions for use with TFS and VS
 
 ## Extensions
 
-### [Artifact Deployment Detector](https://github.com/gregpakes/vsts.extensions/tree/master/Extensions/ArtifactDeploymentDetector)
+### Artifact Deployment Detector
 
 Simple release task that checks to see whether each artifact has already been deployed to the chosen environment.
 
-### [Artifact Variables](https://github.com/gregpakes/vsts.extensions/tree/master/Extensions/ArtifactVariables)
+### Artifact Variables
 
 This is a task for TFS 2015 to provide basic support for [Artifact Variables](https://www.visualstudio.com/en-us/docs/release/author-release-definition/understanding-artifacts#artifact-variables).  This task is not required for TFS 2017+
 
-### [Campaign Monitor](https://github.com/gregpakes/vsts.extensions/tree/master/Extensions/CampaignMonitor)
+### [Campaign Monitor]
 
 A series of tasks for basic interactions with CampaignMonitor.
 
 - Create Campaign
 - Delete Campaign
+- Send Campaign

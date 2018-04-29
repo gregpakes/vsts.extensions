@@ -4,13 +4,13 @@
    "friendlyName": "Create Campaign",
    "description": "Creates a campaign within Campaign Monitor",
    "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
-   "category": "Deploy",
+   "category": "Utility",
    "visibility": ["Release"],
    "author": "Greg Pakes",
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 20
+      "Patch": 21
    },
    "demands": [],
    "inputs": [
