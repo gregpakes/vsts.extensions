@@ -1,0 +1,75 @@
+{
+  "manifestVersion": 1,
+  "id": "multiplebuildsperrepo",
+  "version": "0.0.1",
+  "name": "Multiple Builds Per Repo",
+  "scopes": [],
+  "description": "A series of tasks that are useful when operating with multiple builds per repo",
+  "publisher": "gregpakes",
+  "galleryFlags": [
+    "public"
+  ],
+  "icons": {
+    "default": "static/images/multiplebuildsperrepo.jpg"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "demands": [
+    "api-version/3.0"
+  ],
+  "tags": [
+    ""
+  ],
+  "categories": [
+    "Release"
+  ],
+  "screenshots": [],
+  "content": {
+    "license": {
+      "path": "license.md"
+    },
+    "details": {
+      "path": "readme.md"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    },
+    "support": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    },
+    "issues": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/gregpakes/vsts.extensions"
+  },
+  "branding": {
+    "color": "rgb(220, 235, 252)",
+    "theme": "light"
+  },
+  "files": [
+    {
+      "path": "CheckBuildsCompletedTask"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "CheckBuildsCompletedTask",
+      "description": "Checks whether all builds associated with the artifacts are completed",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "type": "ms.vss-distributed-task.task",
+      "properties": {
+        "name": "CheckBuildsCompletedTask"
+      }
+    }
+  ]
+}
