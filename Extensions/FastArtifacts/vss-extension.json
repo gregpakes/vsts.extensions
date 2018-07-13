@@ -1,0 +1,94 @@
+{
+  "manifestVersion": 1,
+  "id": "fastartifacts",
+  "version": "0.0.1",
+  "name": "Fast Artifacts",
+  "scopes": [],
+  "description": "Various tasks for making artifact upload/download faster",
+  "publisher": "gregpakes",
+  "galleryFlags": [
+    "private"
+  ],
+  "icons": {
+    "default": "static/images/campaignmonitor.jpg"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "demands": [
+    "api-version/3.0"
+  ],
+  "tags": [
+    "Artifacts",
+    "Fast Artifacts",
+    "Compression",
+    "Compress",
+    "Archive",
+    "Zip"
+  ],
+  "categories": [
+    "Build and release"
+  ],
+  "screenshots": [],
+  "content": {
+    "license": {
+      "path": "license.md"
+    },
+    "details": {
+      "path": "readme.md"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    },
+    "support": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    },
+    "issues": {
+      "uri": "https://github.com/gregpakes/vsts.extensions"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/gregpakes/vsts.extensions"
+  },
+  "branding": {
+    "color": "rgb(220, 235, 252)",
+    "theme": "light"
+  },
+  "files": [
+    {
+      "path": "FastCompressTask"
+    },
+    {
+      "path": "FastExpandTask"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "FastCompressTask",
+      "description": "Fast Compress the artifacts for upload",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "type": "ms.vss-distributed-task.task",
+      "properties": {
+        "name": "FastCompressTask"
+      }
+    },
+    {
+      "id": "FastExpandTask",
+      "description": "Fast Expand the artifacts after download",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "type": "ms.vss-distributed-task.task",
+      "properties": {
+        "name": "FastExpandTask"
+      }
+    }
+  ]
+}

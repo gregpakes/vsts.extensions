@@ -1,0 +1,24 @@
+{
+   "id": "c241e95a-a257-4fa6-868f-1ae94530ace5",
+   "name": "FastExpandTask",
+   "friendlyName": "Fast Expand Artifacts",
+   "description": "Expand Artifacts for fast upload",
+   "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
+   "category": "Utility",
+   "visibility": ["Release"],
+   "author": "Greg Pakes",
+   "version": {
+      "Major": 0,
+      "Minor": 0,
+      "Patch": 1
+   },
+   "demands": [],
+   "inputs": [
+        
+
+    ],
+    "outputVariables": [],
+    "instanceNameFormat": "Expand Tasks",
+    "execution":
+        {"Node":{"target":"ExpandTask.js"}}
+}

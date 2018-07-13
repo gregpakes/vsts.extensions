@@ -1,0 +1,38 @@
+{
+   "id": "c241e95a-a257-4fa6-868f-1ae94530ace5",
+   "name": "FastCompressTask",
+   "friendlyName": "FastCompress Artifacts",
+   "description": "Fast Compress Artifacts for fast upload",
+   "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
+   "category": "Utility",
+   "visibility": ["Release"],
+   "author": "Greg Pakes",
+   "version": {
+      "Major": 0,
+      "Minor": 0,
+      "Patch": 1
+   },
+   "demands": [],
+   "inputs": [
+        {
+            "name": "SourceDirectory",
+            "type": "string",
+            "label": "Source Directory",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The source directory to compress."
+        },
+        {
+            "name": "DestinationArchive",
+            "type": "string",
+            "label": "Destination Archive",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The destination archive to create."
+        }
+    ],
+    "outputVariables": [],
+    "instanceNameFormat": "Compress Tasks",
+    "execution":
+        {"Node":{"target":"FastCompressTask.js"}}
+}
