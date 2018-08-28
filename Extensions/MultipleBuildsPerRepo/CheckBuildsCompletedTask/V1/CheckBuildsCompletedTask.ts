@@ -118,13 +118,12 @@ async function run(): Promise<number>  {
                             console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
                         }
                     }
-
-                    resolve();
-
                 } else {
                     console.log(`Failed to locate build id [${buildId}]`);
                 }
             }
+
+            resolve();
 
         } catch (err) {
             reject(err);
