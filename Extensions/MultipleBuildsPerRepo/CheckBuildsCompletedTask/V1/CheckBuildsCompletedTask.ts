@@ -126,9 +126,7 @@ async function run(): Promise<number>  {
                     console.log(`Failed to locate build id [${buildId}]`);
                 }
             }
-
-            resolve();
-
+            resolve();            
         } catch (err) {
             reject(err);
         }
