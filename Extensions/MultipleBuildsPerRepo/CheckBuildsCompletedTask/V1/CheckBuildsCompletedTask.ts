@@ -89,7 +89,7 @@ async function run(): Promise<number>  {
                     // Get the build statuses
                     var buildStatuses = statuses.filter(status => status.context.genre === "continuous-integration");
 
-                    if (buildStatuses){
+                    if (buildStatuses) {
                         // remove duplicates
                         buildStatuses = buildStatuses.filter((thing, index, self) =>
                             index === self.findIndex((t) => (
@@ -97,7 +97,7 @@ async function run(): Promise<number>  {
                             ))
                         );
                     } else {
-                        buildStatuses = [];                        
+                        buildStatuses = [];
                     }
 
                     console.log(`\tFound ${buildStatuses.length} other builds`);
