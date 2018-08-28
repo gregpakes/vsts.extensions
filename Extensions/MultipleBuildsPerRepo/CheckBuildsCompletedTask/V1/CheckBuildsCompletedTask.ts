@@ -4,12 +4,10 @@ import * as util from "./UtilFunctions";
 import * as webApi from "vso-node-api/WebApi";
 import { IReleaseApi } from "vso-node-api/ReleaseApi";
 import { IBuildApi } from "vso-node-api/BuildApi";
-import { Change } from "vso-node-api/interfaces/BuildInterfaces";
-import { IGitApi } from "vso-node-api/GitApi"
-import { GitPullRequestQuery, 
-    GitPullRequestQueryInput, 
-    GitPullRequestQueryType, 
-    GitPullRequest } from "vso-node-api/interfaces/GitInterfaces"
+import { Change, BuildResult } from "vso-node-api/interfaces/BuildInterfaces";
+import { GitStatus } from "vso-node-api/interfaces/GitInterfaces";
+import { IGitApi } from "vso-node-api/GitApi";
+import { GitPullRequestQuery, GitPullRequestQueryInput, GitPullRequestQueryType, GitPullRequest } from "vso-node-api/interfaces/GitInterfaces";
 
 var taskJson = require("./task.json");
 const area: string = "CheckBuildsCompleted";
@@ -76,69 +74,56 @@ async function run(): Promise<number>  {
 
             var allPrs: GitPullRequest[] = [];
             for (var artifact of artifactsInThisRelease) {
-                console.log(`Looking at artifact [${artifact.alias}]`);
+                console.log(`Artifact: [${artifact.alias}] - ${artifact.definitionReference.version.name}`);
 
-                var pullRequestMergeCommitId = artifact.definitionReference.pullRequestMergeCommitId.id;
-                var buildNumber = artifact.definitionReference.version.name;
                 var buildId = artifact.definitionReference.version.id;
 
-                // Get the pull request
-                // https://isams.visualstudio.com/isams/_apis/git/repositories/isams/pullrequestquery?api-version=4.1
-                // {
-                //     "queries": [
-                //             {
-                //                 "items": ["de32bde1801c22192876cf322c619bef68c6a207"],
-                //                 "type": "lastMergeCommit"
-                //             }
-                //         ]
-                // }
-                
                 var build = await buildApi.getBuild(parseInt(buildId), teamProject);
 
-                if (build) {                    
+                if (build) {
+                    console.log(`\tBuild ${build.buildNumber} was built from commit: ${build.sourceVersion}`);
 
-                    // Yuck - is there any better way to do this
-                    var queries: GitPullRequestQueryInput = {
-                        items: [pullRequestMergeCommitId],
-                        type: GitPullRequestQueryType.LastMergeCommit
-                    };
+                    // Get the commit for this build
+                    var statuses = await gitApi.getStatuses(build.sourceVersion, build.repository.id, build.project.name, 1000, 0, false);
 
-                    var query: GitPullRequestQuery = {
-                        queries: [queries],
-                        results: null
-                    };
+                    // Get the build statuses
+                    var buildStatuses = statuses.filter(status => status.context.genre === "continuous-integration");
 
-                    var prQuery = await gitApi.getPullRequestQuery(query, build.repository.id, teamProject);
+                    // remove duplicates
+                    buildStatuses = buildStatuses.filter((thing, index, self) =>
+                        index === self.findIndex((t) => (
+                        t.targetUrl === thing.targetUrl
+                        ))
+                    );
 
-                    if (prQuery) {
-                        console.log(`Located PR [${prQuery.results[pullRequestMergeCommitId].pullRequestId}]`);
+                    console.log(`\tFound ${buildStatuses.length} other builds`);
 
-                        // Get the actual PR
-                        console.log(`Fetching the PR details [${prQuery.results[pullRequestMergeCommitId].pullRequestId}]`)
-                        var pr = await gitApi.getPullRequest(build.repository.id, prQuery.results[pullRequestMergeCommitId].pullRequestId, teamProject, null, null, null, true, null);
+                    for (var i = 0; i < buildStatuses.length; i++) {
+                        var buildStatus = buildStatuses[i];
+                        var buildFromStatus = await util.getBuildFromTargetUrl(buildApi, buildStatus.targetUrl, build.project.name);
 
-                        if (pr){
-                            if (allPrs.findIndex(x => x.pullRequestId === pr.pullRequestId) === -1){
-                                // ok to add
-                                allPrs.push(pr);
+                        if (build.definition.id !== buildFromStatus.definition.id) {
+                            if (build.sourceBranch === buildFromStatus.sourceBranch) {
+                                console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+                                var buildResult = BuildResult[buildFromStatus.result];
+                                console.log(`\t - Status: ${buildResult}`);
+
+                                if (buildFromStatus.result === 8) {
+                                    reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+                                }
                             } else {
-                                console.log(`Duplicate PR, skipping`);
+                                console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
                             }
                         } else {
-                            console.log(`Failed to get the PR details [${prQuery.results[pullRequestMergeCommitId].pullRequestId}]`)
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
                         }
-                    } else {
-                        console.log('Failed to locate PR for Artifact');
                     }
-                } else {
-                    console.log(`Failed to locate build id [${buildId}]`)
-                }
-            }
 
-            console.log(`Found [${allPrs.length}] Pull Requests`);
-            for (var pullrequest of allPrs) {
-                console.log(`Getting all the builds triggered by PR [${pullrequest.pullRequestId}]`);
-                
+                    resolve();
+
+                } else {
+                    console.log(`Failed to locate build id [${buildId}]`);
+                }
             }
 
         } catch (err) {

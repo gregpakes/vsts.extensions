@@ -2,6 +2,8 @@ import tl = require("vsts-task-lib/task");
 import * as webApi from "vso-node-api/WebApi";
 import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
 import { Artifact } from "vso-node-api/interfaces/ReleaseInterfaces";
+import { Build } from "vso-node-api/interfaces/BuildInterfaces";
+import { IBuildApi } from "vso-node-api/BuildApi";
 
 // Gets the credential handler.  Supports both PAT and OAuth tokens
 export function getCredentialHandler(): IRequestHandler {
@@ -25,4 +27,10 @@ export function getBuildArtifacts(artifacts: Artifact[]): Artifact[] {
         }
     }
     return result;
+}
+
+export async function getBuildFromTargetUrl(buildApi: IBuildApi, targetUrl: string, project: string): Promise<Build> {
+    // Extract the build Id
+    var buildId: number = parseInt(targetUrl.substring((targetUrl.lastIndexOf("/") + 1), targetUrl.length));
+    return await buildApi.getBuild(buildId, project);
 }
