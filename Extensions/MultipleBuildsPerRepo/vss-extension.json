@@ -7,10 +7,10 @@
   "description": "A series of tasks that are useful when operating with multiple builds per repo",
   "publisher": "gregpakes",
   "galleryFlags": [
-    "Preview"
+    "public"
   ],
   "icons": {
-    "default": "static/images/multiplebuildsperrepo.jpg"
+    "default": "static/5596-128.jpg"
   },
   "targets": [
     {
