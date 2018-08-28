@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "multiplebuildsperrepo",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "Multiple Builds Per Repo",
   "scopes": [],
   "description": "A series of tasks that are useful when operating with multiple builds per repo",

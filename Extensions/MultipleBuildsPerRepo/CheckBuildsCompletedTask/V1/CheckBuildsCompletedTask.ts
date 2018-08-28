@@ -86,20 +86,20 @@ async function run(): Promise<number>  {
                     // Get the commit for this build
                     var statuses = await gitApi.getStatuses(build.sourceVersion, build.repository.id, build.project.name, 1000, 0, false);
 
-                    // Get the build statuses
-                    var buildStatuses = statuses.filter(status => status.context.genre === "continuous-integration");
-
-                    if (buildStatuses) {
-                        // remove duplicates
-                        buildStatuses = buildStatuses.filter((thing, index, self) =>
-                            index === self.findIndex((t) => (
-                            t.targetUrl === thing.targetUrl
-                            ))
-                        );
+                    if (statuses) {
+                        // Get the build statuses
+                        var buildStatuses = statuses.filter(status => status.context.genre === "continuous-integration");
                     } else {
                         buildStatuses = [];
                     }
 
+                    // remove duplicates
+                    buildStatuses = buildStatuses.filter((thing, index, self) =>
+                        index === self.findIndex((t) => (
+                        t.targetUrl === thing.targetUrl
+                        ))
+                    );
+                    
                     console.log(`\tFound ${buildStatuses.length} other builds`);
 
                     for (var i = 0; i < buildStatuses.length; i++) {
