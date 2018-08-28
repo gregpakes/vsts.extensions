@@ -89,12 +89,16 @@ async function run(): Promise<number>  {
                     // Get the build statuses
                     var buildStatuses = statuses.filter(status => status.context.genre === "continuous-integration");
 
-                    // remove duplicates
-                    buildStatuses = buildStatuses.filter((thing, index, self) =>
-                        index === self.findIndex((t) => (
-                        t.targetUrl === thing.targetUrl
-                        ))
-                    );
+                    if (buildStatuses){
+                        // remove duplicates
+                        buildStatuses = buildStatuses.filter((thing, index, self) =>
+                            index === self.findIndex((t) => (
+                            t.targetUrl === thing.targetUrl
+                            ))
+                        );
+                    } else {
+                        buildStatuses = [];                        
+                    }
 
                     console.log(`\tFound ${buildStatuses.length} other builds`);
 
