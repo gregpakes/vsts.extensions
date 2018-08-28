@@ -7,7 +7,7 @@
   "description": "A series of tasks that are useful when operating with multiple builds per repo",
   "publisher": "gregpakes",
   "galleryFlags": [
-    "public"
+    "Preview"
   ],
   "icons": {
     "default": "static/images/multiplebuildsperrepo.jpg"
@@ -24,7 +24,7 @@
     ""
   ],
   "categories": [
-    "Release"
+    "Build and release"
   ],
   "screenshots": [],
   "content": {
