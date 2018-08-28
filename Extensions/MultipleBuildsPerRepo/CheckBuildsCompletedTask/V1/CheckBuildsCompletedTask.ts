@@ -99,7 +99,7 @@ async function run(): Promise<number>  {
                         t.targetUrl === thing.targetUrl
                         ))
                     );
-                    
+
                     console.log(`\tFound ${buildStatuses.length} other builds`);
 
                     for (var i = 0; i < buildStatuses.length; i++) {
@@ -126,7 +126,7 @@ async function run(): Promise<number>  {
                     console.log(`Failed to locate build id [${buildId}]`);
                 }
             }
-            resolve();            
+            resolve();
         } catch (err) {
             reject(err);
         }
