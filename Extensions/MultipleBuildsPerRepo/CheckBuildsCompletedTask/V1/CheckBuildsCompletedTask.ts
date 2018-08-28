@@ -106,21 +106,26 @@ async function run(): Promise<number>  {
                         var buildStatus = buildStatuses[i];
                         var buildFromStatus = await util.getBuildFromTargetUrl(buildApi, buildStatus.targetUrl, build.project.name);
 
-                        if (build.definition.id !== buildFromStatus.definition.id) {
-                            if (build.sourceBranch === buildFromStatus.sourceBranch) {
-                                console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
-                                var buildResult = BuildResult[buildFromStatus.result];
-                                console.log(`\t - Status: ${buildResult}`);
+                        // Check that this build definition is actually an artifact
+                        if (util.buildDefinitionExistsInArtifacts(buildFromStatus.definition.id, artifactsInThisRelease)) {
+                            if (build.definition.id !== buildFromStatus.definition.id) {
+                                if (build.sourceBranch === buildFromStatus.sourceBranch) {
+                                    console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+                                    var buildResult = BuildResult[buildFromStatus.result];
+                                    console.log(`\t - Status: ${buildResult}`);
 
-                                if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
-                                    reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} - Status: ${buildResult}`);
-                                    return;
+                                    if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
+                                        reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} - Status: ${buildResult}`);
+                                        return;
+                                    }
+                                } else {
+                                    console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
                                 }
                             } else {
-                                console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
+                                console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
                             }
                         } else {
-                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as it is not an artifact in this release.`);
                         }
                     }
                 } else {

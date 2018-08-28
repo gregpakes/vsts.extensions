@@ -34,3 +34,14 @@ export async function getBuildFromTargetUrl(buildApi: IBuildApi, targetUrl: stri
     var buildId: number = parseInt(targetUrl.substring((targetUrl.lastIndexOf("/") + 1), targetUrl.length));
     return await buildApi.getBuild(buildId, project);
 }
+
+export function buildDefinitionExistsInArtifacts(buildDefinitionId: number, artifacts: Artifact[]) {
+    for (var i = 0; i < artifacts.length; i++) {
+        var artifact = artifacts[i];
+        if (parseInt(artifact.definitionReference.definition.id) === buildDefinitionId) {
+            return true;
+        }
+    }
+
+    return false;
+}
