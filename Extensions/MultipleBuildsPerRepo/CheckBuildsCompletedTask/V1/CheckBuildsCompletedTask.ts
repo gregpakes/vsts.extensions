@@ -112,8 +112,8 @@ async function run(): Promise<number>  {
                                 var buildResult = BuildResult[buildFromStatus.result];
                                 console.log(`\t - Status: ${buildResult}`);
 
-                                if (buildFromStatus.result === 8) {
-                                    reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+                                if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
+                                reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} - Status: ${buildResult}`);
                                 }
                             } else {
                                 console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
