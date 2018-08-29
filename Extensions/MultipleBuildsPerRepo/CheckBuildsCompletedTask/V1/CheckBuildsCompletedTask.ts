@@ -107,25 +107,39 @@ async function run(): Promise<number>  {
                         var buildFromStatus = await util.getBuildFromTargetUrl(buildApi, buildStatus.targetUrl, build.project.name);
 
                         // Check that this build definition is actually an artifact
-                        if (util.buildDefinitionExistsInArtifacts(buildFromStatus.definition.id, artifactsInThisRelease)) {
-                            if (build.definition.id !== buildFromStatus.definition.id) {
-                                if (build.sourceBranch === buildFromStatus.sourceBranch) {
-                                    console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
-                                    var buildResult = BuildResult[buildFromStatus.result];
-                                    console.log(`\t - Status: ${buildResult}`);
-
-                                    if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
-                                        reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} - Status: ${buildResult}`);
-                                        return;
-                                    }
-                                } else {
-                                    console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
-                                }
-                            } else {
-                                console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
-                            }
-                        } else {
+                        if (!util.buildDefinitionExistsInArtifacts(buildFromStatus.definition.id, artifactsInThisRelease)) {
                             console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as it is not an artifact in this release.`);
+                            continue;
+                        }
+
+                        if (build.definition.id === buildFromStatus.definition.id) {
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as we already have the artifact for this build.`);
+                            continue;
+                        }
+
+                        if (build.sourceBranch !== buildFromStatus.sourceBranch) {
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  Expected branch ${build.sourceBranch}, found ${buildFromStatus.sourceBranch}.`);
+                            continue;
+                        }
+
+                        if (util.buildExistsInArtifacts(buildFromStatus, artifactsInThisRelease)) {
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}.  This build is already an artifact.`);
+                            continue;
+                        }
+
+                        // We need to check that the actual artifact corresponding to this build is not newer than this build
+                        if (await util.isBuildNewerThanArtifact(gitApi, buildApi, buildFromStatus, artifactsInThisRelease) === false) {
+                            console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}. The build in the artifact is newer than this build.`);
+                            continue;
+                        }
+
+                        console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+                        var buildResult = BuildResult[buildFromStatus.result];
+                        console.log(`\t - Status: ${buildResult}`);
+
+                        if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
+                            reject(`Detected failed build ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} - Status: ${buildResult}`);
+                            return;
                         }
                     }
                 } else {

@@ -4,6 +4,7 @@ import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterface
 import { Artifact } from "vso-node-api/interfaces/ReleaseInterfaces";
 import { Build } from "vso-node-api/interfaces/BuildInterfaces";
 import { IBuildApi } from "vso-node-api/BuildApi";
+import { IGitApi } from "vso-node-api/GitApi";
 
 // Gets the credential handler.  Supports both PAT and OAuth tokens
 export function getCredentialHandler(): IRequestHandler {
@@ -35,7 +36,7 @@ export async function getBuildFromTargetUrl(buildApi: IBuildApi, targetUrl: stri
     return await buildApi.getBuild(buildId, project);
 }
 
-export function buildDefinitionExistsInArtifacts(buildDefinitionId: number, artifacts: Artifact[]) {
+export function buildDefinitionExistsInArtifacts(buildDefinitionId: number, artifacts: Artifact[]): boolean {
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
         if (parseInt(artifact.definitionReference.definition.id) === buildDefinitionId) {
@@ -44,4 +45,50 @@ export function buildDefinitionExistsInArtifacts(buildDefinitionId: number, arti
     }
 
     return false;
+}
+
+export function buildExistsInArtifacts(build: Build, artifacts: Artifact[]): boolean {
+    for (var i = 0; i < artifacts.length; i++) {
+        var artifact = artifacts[i];
+        if (parseInt(artifact.definitionReference.version.id) === build.id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+export async function isBuildNewerThanArtifact(gitApi: IGitApi, buildApi: IBuildApi, build: Build, artifacts: Artifact[]): Promise<boolean> {
+
+    return new Promise<boolean>(async (resolve, reject) => {
+        try {
+            for (var i = 0; i < artifacts.length; i++) {
+                var artifact = artifacts[i];
+                if (parseInt(artifact.definitionReference.definition.id) === build.definition.id) {
+                    // We have found the definition
+                    var artifactBuildId = artifact.definitionReference.version.id;
+                    var artifactBuild = await buildApi.getBuild(parseInt(artifactBuildId), artifact.definitionReference.project.name);
+
+                    var buildCommitPromise = gitApi.getCommit(build.sourceVersion, build.repository.id, build.project.name);
+                    var artifactCommitPromise = gitApi.getCommit(artifactBuild.sourceVersion, artifactBuild.repository.id, artifactBuild.project.name);
+
+                    await Promise.all([buildCommitPromise, artifactCommitPromise]).then(function(values) {
+                        var buildCommit = values[0];
+                        var artifactCommit = values[1];
+
+                        if (buildCommit.author.date > artifactCommit.author.date) {
+                            resolve(true);
+                        } else {
+                            resolve(false);
+                        }
+                    }).catch(reason => {
+                        reject(reason);
+                    });
+                }
+            }
+            resolve(true);
+        } catch (err) {
+            reject(err);
+        }
+    });
 }
