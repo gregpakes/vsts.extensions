@@ -1,8 +1,8 @@
 {
    "id": "fb30bc33-8b65-4e5f-8d16-70031c41c1bc",
-   "name": "CheckBuildsCompletedTask",
-   "friendlyName": "Check Builds Completed",
-   "description": "Checks whether all builds associated with the artifacts are completed",
+   "name": "CheckArtifactConsistency",
+   "friendlyName": "Check Artifact Consistency",
+   "description": "Checks whether other builds associated with each artifact are consistent.",
    "helpMarkDown": "[More Information](https://github.com/gregpakes/vsts.extensions)",
    "category": "Utility",
    "visibility": ["Release"],
@@ -18,7 +18,7 @@
 
     ],
     "outputVariables": [],
-    "instanceNameFormat": "Check Builds Completed",
+    "instanceNameFormat": "Check Artifact Consistency",
     "execution":
-        {"Node":{"target":"CheckBuildsCompletedTask.js"}}
+        {"Node":{"target":"CheckArtifactConsistency.js"}}
 }

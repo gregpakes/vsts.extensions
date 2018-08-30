@@ -56,19 +56,19 @@
   },
   "files": [
     {
-      "path": "CheckBuildsCompletedTask"
+      "path": "CheckArtifactConsistencyTask"
     }
   ],
   "contributions": [
     {
-      "id": "CheckBuildsCompletedTask",
+      "id": "CheckArtifactConsistencyTask",
       "description": "Checks whether all builds associated with the artifacts are completed",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "type": "ms.vss-distributed-task.task",
       "properties": {
-        "name": "CheckBuildsCompletedTask"
+        "name": "CheckArtifactConsistencyTask"
       }
     }
   ]
