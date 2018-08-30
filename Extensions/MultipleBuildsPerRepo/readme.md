@@ -1,10 +1,12 @@
-## Multiple Builds per Repo
+# Multiple Builds per Repo
 
 This task is useful when you have multiple of builds in a single git repo.  There are a few situations that can create problems when referencing these builds in a Release definition.  This task ensures that you cannot release code in an invalid state.
 
 ### The Problems
 
 If you have a single git repo with multiple projects/builds in it, it can be easy to release code in a broken state.
+
+## Task: Check Artifact Consistency
 
 ### Scenario - Continious Deployment
 
@@ -18,9 +20,9 @@ If you have a single git repo with multiple projects/builds in it, it can be eas
 
 If you put this task into your Release Definition as the first task, it will detect the two issues above and will fail the release.  This ensures that you do not deploy invalid code.
 
-### Learn More
+## Learn More
 
 The [source](https://github.com/gregpakes/vsts.extensions) to this extension is available. Feel free to take, fork, and extend.
 
-### Feedback ###
+## Feedback ##
 - https://github.com/gregpakes/vsts.extensions
