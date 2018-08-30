@@ -10,7 +10,7 @@
    "version": {
       "Major": 0,
       "Minor": 0,
-      "Patch": 11
+      "Patch": 12
    },
    "demands": [],
    "inputs": [
@@ -20,5 +20,5 @@
     "outputVariables": [],
     "instanceNameFormat": "Check Artifact Consistency",
     "execution":
-        {"Node":{"target":"CheckArtifactConsistency.js"}}
+        {"Node":{"target":"CheckArtifactConsistencyTask.js"}}
 }
