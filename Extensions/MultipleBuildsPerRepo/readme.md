@@ -8,6 +8,8 @@ If you have a single git repo with multiple projects/builds in it, it can be eas
 
 ## Task: Check Artifact Consistency
 
+Use this task in the release definition to detect other builds from the same commit that either failed or have not finished yet.
+
 ### Scenario - Continious Deployment
 
 - You have 2 builds running from a single git repo.

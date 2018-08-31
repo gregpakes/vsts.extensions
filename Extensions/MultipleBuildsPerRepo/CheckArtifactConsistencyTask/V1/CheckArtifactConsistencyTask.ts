@@ -8,6 +8,7 @@ import { Change, BuildResult } from "vso-node-api/interfaces/BuildInterfaces";
 import { GitStatus } from "vso-node-api/interfaces/GitInterfaces";
 import { IGitApi } from "vso-node-api/GitApi";
 import { GitPullRequestQuery, GitPullRequestQueryInput, GitPullRequestQueryType, GitPullRequest } from "vso-node-api/interfaces/GitInterfaces";
+import { ReleaseStatus, ReleaseUpdateMetadata } from "vso-node-api/interfaces/ReleaseInterfaces";
 
 var taskJson = require("./task.json");
 const area: string = "CheckBuildsCompleted";
@@ -160,7 +161,30 @@ run()
             tl.setResult(tl.TaskResult.Succeeded, "");
         }
     )
-    .catch((err) => {
+    .catch(async (err) => {
         publishEvent("reliability", { issueType: "error", errorMessage: JSON.stringify(err, Object.getOwnPropertyNames(err)) });
         tl.setResult(tl.TaskResult.Failed, err);
+
+        // Attempt to abandon release
+        let abandonOnFailure = tl.getBoolInput("abandonreleaseonfailure");
+
+        if (abandonOnFailure) {
+            let tpcUri = tl.getVariable("System.TeamFoundationCollectionUri");
+            let releaseId: number = parseInt(tl.getVariable("Release.ReleaseId"));
+            let teamProject = tl.getVariable("System.TeamProject");
+
+            let credentialHandler: vstsInterfaces.IRequestHandler = util.getCredentialHandler();
+            let vsts = new webApi.WebApi(tpcUri, credentialHandler);
+            var releaseApi: IReleaseApi = await vsts.getReleaseApi();
+
+            let metatdata: ReleaseUpdateMetadata = <ReleaseUpdateMetadata>
+            {
+                comment: "Abandoned by [Check Artifact Consistency Task]",
+                status: ReleaseStatus.Abandoned
+            };
+
+            var release = await releaseApi.updateReleaseResource(metatdata, teamProject, releaseId);
+
+            console.log(`Abandoned release.`);
+        }
     });
