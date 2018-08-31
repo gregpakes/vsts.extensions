@@ -1,6 +1,6 @@
 # Multiple Builds per Repo
 
-This task is useful when you have multiple of builds in a single git repo.  There are a few situations that can create problems when referencing these builds in a Release definition.  This task ensures that you cannot release code in an invalid state.
+This task is useful when you have multiple builds in a single git repo.  There are a few situations that can create problems when referencing these builds in a Release definition.  This task ensures that you cannot release code in an invalid state.
 
 ### The Problems
 
