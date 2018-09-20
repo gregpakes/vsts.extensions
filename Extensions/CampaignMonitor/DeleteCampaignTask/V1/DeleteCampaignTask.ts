@@ -40,6 +40,16 @@ function publishEvent(feature, properties: any): void {
     }
 }
 
+function getErrorMessage(err): string {
+    if (err) {
+        if (err.Message) {
+            return err.Message;
+        }
+    }
+
+    return err;
+}
+
 async function run(): Promise<void>  {
     var promise = new Promise<void>(async (resolve, reject) => {
         try {
@@ -77,8 +87,9 @@ async function run(): Promise<void>  {
             var api = new createsend(opts);
             await api.campaigns.delete(campaignId, (err, res) => {
                 if (err) {
+                    var errorMessage = getErrorMessage(err);
                     console.log(err);
-                    reject(err);
+                    reject(errorMessage);
                 } else {
                     console.log("Campaign deleted successfully.");
                     resolve();
