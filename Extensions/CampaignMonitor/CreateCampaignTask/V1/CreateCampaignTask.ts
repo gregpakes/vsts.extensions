@@ -151,16 +151,34 @@ async function run(): Promise<number>  {
                             "Personalize": "Random"
                         };
 
-                        await api.campaigns.sendPreview(campaignId, previewDetails, (err, res) => {
-                            if (err) {
-                                var errorMessage = getErrorMessage(err);
-                                console.log(err);
-                                reject(errorMessage);
-                            } else {
-                                console.log(`Preview sent`);
-                                resolve(campaignId);
-                            }
-                        });
+                        var retries = 3;
+                        var success = false;
+                        var attempts = 0;
+                        var errors = new Array<string>();
+
+                        while (retries-- > 0 && success === false) {
+                            attempts++;
+                            console.log(`Sending preview: Attempt ${attempts} of ${attempts + retries}`);
+                            await api.campaigns.sendPreview(campaignId, previewDetails, (err, res) => {
+                                if (err) {
+                                    var errorMessage = getErrorMessage(err);
+                                    console.log(err);
+                                    tl.warning(`Failed to send preview, retrying...`);
+                                    errors.push(errorMessage);
+                                } else {
+                                    console.log(`Preview sent`);
+                                    success = true;
+                                    resolve(campaignId);
+                                }
+                            });
+                        }
+
+                        // Failed
+                        tl.warning(`The campaign was created successfully, but sending the preview failed.`);
+
+                        // manually set the output variable
+                        tl.setVariable("CampaignMonitorCampaignId", campaignId);
+                        reject(errors.join(", "));
                     } else {
                         resolve(campaignId);
                     }
