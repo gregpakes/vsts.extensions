@@ -41,6 +41,16 @@ function publishEvent(feature, properties: any): void {
     }
 }
 
+function getErrorMessage(err): string {
+    if (err) {
+        if (err.Message) {
+            return err.Message;
+        }
+    }
+
+    return err;
+}
+
 async function run(): Promise<number>  {
     var promise = new Promise<number>(async (resolve, reject) => {
 
@@ -125,8 +135,9 @@ async function run(): Promise<number>  {
             console.log(`Creating campaign...`);
             await api.campaigns.createFromTemplate(clientId, details, async (err, res) => {
                 if (err) {
+                    var errorMessage = getErrorMessage(err);
                     console.log(err);
-                    reject(err);
+                    reject(errorMessage);
                 } else {
                     var campaignId = res.campaignId;
                     console.log(`Campaign created successfully with Id [${campaignId}]`);
@@ -142,8 +153,9 @@ async function run(): Promise<number>  {
 
                         await api.campaigns.sendPreview(campaignId, previewDetails, (err, res) => {
                             if (err) {
+                                var errorMessage = getErrorMessage(err);
                                 console.log(err);
-                                reject(err);
+                                reject(errorMessage);
                             } else {
                                 console.log(`Preview sent`);
                                 resolve(campaignId);
