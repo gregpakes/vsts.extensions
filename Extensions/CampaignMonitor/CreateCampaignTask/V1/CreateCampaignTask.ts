@@ -177,8 +177,8 @@ async function run(): Promise<number>  {
                             attempts++;
                             console.log(`Sending preview: Attempt ${attempts} of ${attempts + retries}`);
                             await sendPreview(api, campaignId, parsedRecipients).then(data => {
-                                resolve(campaignId);
                                 success = true;
+                                resolve(campaignId);
                             }).catch(reason => {
                                 tl.warning(`Failed to send preview, retrying in 5 seconds...`);
                                 sleep(5000);
@@ -186,11 +186,15 @@ async function run(): Promise<number>  {
                             });
                         }
 
-                        // manually set the output variable
-                        tl.setVariable("CampaignMonitorCampaignId", campaignId);
+                        if (!success) {
+                            // manually set the output variable
+                            tl.setVariable("CampaignMonitorCampaignId", campaignId);
 
-                        tl.warning(`The campaign was created successfully, but sending the preview failed.`);
-                        reject(errors.join(", "));
+                            tl.warning(`The campaign was created successfully, but sending the preview failed.`);
+                            reject(errors.join(", "));
+                        } else {
+                            resolve(campaignId);
+                        }
 
                     } else {
                         resolve(campaignId);
