@@ -1,14 +1,15 @@
 import tl = require("vsts-task-lib/task");
-import * as vstsInterfaces from "vso-node-api/interfaces/common/VsoBaseInterfaces";
+import * as vstsInterfaces from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 import * as util from "./UtilFunctions";
-import * as webApi from "vso-node-api/WebApi";
-import { IReleaseApi } from "vso-node-api/ReleaseApi";
-import { IBuildApi } from "vso-node-api/BuildApi";
-import { Change, BuildResult } from "vso-node-api/interfaces/BuildInterfaces";
-import { GitStatus } from "vso-node-api/interfaces/GitInterfaces";
-import { IGitApi } from "vso-node-api/GitApi";
-import { GitPullRequestQuery, GitPullRequestQueryInput, GitPullRequestQueryType, GitPullRequest } from "vso-node-api/interfaces/GitInterfaces";
-import { ReleaseStatus, ReleaseUpdateMetadata } from "vso-node-api/interfaces/ReleaseInterfaces";
+import * as webApi from "azure-devops-node-api/WebApi";
+import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
+import { IBuildApi } from "azure-devops-node-api/BuildApi";
+import { Change, BuildResult } from "azure-devops-node-api/interfaces/BuildInterfaces";
+import { GitStatus } from "azure-devops-node-api/interfaces/GitInterfaces";
+import { IGitApi } from "azure-devops-node-api/GitApi";
+import { GitPullRequestQuery, GitPullRequestQueryInput, GitPullRequestQueryType, GitPullRequest } from "azure-devops-node-api/interfaces/GitInterfaces";
+import { ReleaseStatus, ReleaseUpdateMetadata } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { reject, resolve } from "q";
 
 var taskJson = require("./task.json");
 const area: string = "CheckBuildsCompleted";
@@ -85,7 +86,12 @@ async function run(): Promise<number>  {
                     console.log(`\tBuild ${build.buildNumber} was built from commit: ${build.sourceVersion}`);
 
                     // Get the commit for this build
+                    tl.debug("\tGetting statuses...");
+                    tl.debug(`\t\ttBuild Source Version: ${build.sourceVersion}`);
+                    tl.debug(`\t\ttBuild Repository Id: ${build.repository.id}`);
+                    tl.debug(`\t\tBuild Project Name: ${build.project.name}`);
                     var statuses = await gitApi.getStatuses(build.sourceVersion, build.repository.id, build.project.name, 1000, 0, false);
+                    tl.debug("\tDone.");
 
                     if (statuses) {
                         // Get the build statuses
@@ -149,6 +155,7 @@ async function run(): Promise<number>  {
             }
             resolve();
         } catch (err) {
+            tl.error(err);
             reject(err);
         }
     });
@@ -165,26 +172,31 @@ run()
         publishEvent("reliability", { issueType: "error", errorMessage: JSON.stringify(err, Object.getOwnPropertyNames(err)) });
         tl.setResult(tl.TaskResult.Failed, err);
 
-        // Attempt to abandon release
-        let abandonOnFailure = tl.getBoolInput("abandonreleaseonfailure");
+        try {
+            // Attempt to abandon release
+            let abandonOnFailure = tl.getBoolInput("abandonreleaseonfailure");
 
-        if (abandonOnFailure) {
-            let tpcUri = tl.getVariable("System.TeamFoundationCollectionUri");
-            let releaseId: number = parseInt(tl.getVariable("Release.ReleaseId"));
-            let teamProject = tl.getVariable("System.TeamProject");
+            if (abandonOnFailure) {
+                let tpcUri = tl.getVariable("System.TeamFoundationCollectionUri");
+                let releaseId: number = parseInt(tl.getVariable("Release.ReleaseId"));
+                let teamProject = tl.getVariable("System.TeamProject");
 
-            let credentialHandler: vstsInterfaces.IRequestHandler = util.getCredentialHandler();
-            let vsts = new webApi.WebApi(tpcUri, credentialHandler);
-            var releaseApi: IReleaseApi = await vsts.getReleaseApi();
+                let credentialHandler: vstsInterfaces.IRequestHandler = util.getCredentialHandler();
+                let vsts = new webApi.WebApi(tpcUri, credentialHandler);
+                var releaseApi: IReleaseApi = await vsts.getReleaseApi();
 
-            let metatdata: ReleaseUpdateMetadata = <ReleaseUpdateMetadata>
-            {
-                comment: "Abandoned by [Check Artifact Consistency Task]",
-                status: ReleaseStatus.Abandoned
-            };
+                let metatdata: ReleaseUpdateMetadata = <ReleaseUpdateMetadata>
+                {
+                    comment: "Abandoned by [Check Artifact Consistency Task]",
+                    status: ReleaseStatus.Abandoned
+                };
 
-            var release = await releaseApi.updateReleaseResource(metatdata, teamProject, releaseId);
+                var release = await releaseApi.updateReleaseResource(metatdata, teamProject, releaseId);
 
-            console.log(`Abandoned release.`);
+                console.log(`Abandoned release.`);
+                resolve("Abandoned Release");
+            }
+        } catch (abandonErr) {
+            reject(err);
         }
     });

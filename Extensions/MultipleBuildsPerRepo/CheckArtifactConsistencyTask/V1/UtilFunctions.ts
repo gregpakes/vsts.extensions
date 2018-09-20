@@ -1,10 +1,10 @@
 import tl = require("vsts-task-lib/task");
-import * as webApi from "vso-node-api/WebApi";
-import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import { Artifact } from "vso-node-api/interfaces/ReleaseInterfaces";
-import { Build } from "vso-node-api/interfaces/BuildInterfaces";
-import { IBuildApi } from "vso-node-api/BuildApi";
-import { IGitApi } from "vso-node-api/GitApi";
+import * as webApi from "azure-devops-node-api/WebApi";
+import { IRequestHandler } from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
+import { Artifact } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Build } from "azure-devops-node-api/interfaces/BuildInterfaces";
+import { IBuildApi } from "azure-devops-node-api/BuildApi";
+import { IGitApi } from "azure-devops-node-api/GitApi";
 
 // Gets the credential handler.  Supports both PAT and OAuth tokens
 export function getCredentialHandler(): IRequestHandler {
