@@ -3,6 +3,7 @@ import tl = require("vsts-task-lib/task");
 var taskJson = require("./task.json");
 const area: string = "CreateCampaign";
 var createsend = require("createsend-node");
+var sleep = require("thread-sleep");
 import * as fs from "fs";
 
 function getDefaultProps() {
@@ -163,8 +164,9 @@ async function run(): Promise<number>  {
                                 if (err) {
                                     var errorMessage = getErrorMessage(err);
                                     console.log(err);
-                                    tl.warning(`Failed to send preview, retrying...`);
+                                    tl.warning(`Failed to send preview, retrying in 5 seconds...`);
                                     errors.push(errorMessage);
+                                    sleep(5000);
                                 } else {
                                     console.log(`Preview sent`);
                                     success = true;

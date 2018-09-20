@@ -10,7 +10,8 @@
     "fs": "0.0.1-security",
     "hoek": "^5.0.3",
     "vsts-task-lib": "^2.6.1",
-    "cryptiles": "^4.1.2"
+    "cryptiles": "^4.1.2",
+    "thread-sleep": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^8.0.7",
