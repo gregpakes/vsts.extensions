@@ -87,8 +87,8 @@ async function run(): Promise<number>  {
 
                     // Get the commit for this build
                     tl.debug("\tGetting statuses...");
-                    tl.debug(`\t\ttBuild Source Version: ${build.sourceVersion}`);
-                    tl.debug(`\t\ttBuild Repository Id: ${build.repository.id}`);
+                    tl.debug(`\t\tBuild Source Version: ${build.sourceVersion}`);
+                    tl.debug(`\t\tBuild Repository Id: ${build.repository.id}`);
                     tl.debug(`\t\tBuild Project Name: ${build.project.name}`);
                     var statuses = await gitApi.getStatuses(build.sourceVersion, build.repository.id, build.project.name, 1000, 0, false);
                     tl.debug("\tDone.");
