@@ -52,6 +52,27 @@ function getErrorMessage(err): string {
     return err;
 }
 
+async function sendPreview(api: any, campaignId: string, recipients: string[]): Promise<any> {
+    return new Promise<any>(async (resolve, reject) => {
+
+        var previewDetails = {
+            "PreviewRecipients": recipients,
+            "Personalize": "Random"
+        };
+
+        await api.campaigns.sendPreview(campaignId, previewDetails, (err, res) => {
+            if (err) {
+                var errorMessage = getErrorMessage(err);
+                console.log(err);
+                reject(errorMessage);
+            } else {
+                console.log(`Preview sent`);
+                resolve();
+            }
+        });
+    });
+}
+
 async function run(): Promise<number>  {
     var promise = new Promise<number>(async (resolve, reject) => {
 
@@ -147,40 +168,30 @@ async function run(): Promise<number>  {
                         console.log(`Sending Preview...`);
                         var parsedRecipients = previewRecipients.split(",");
 
-                        var previewDetails = {
-                            "PreviewRecipients": parsedRecipients,
-                            "Personalize": "Random"
-                        };
-
-                        var retries = 3;
-                        var success = false;
-                        var attempts = 0;
-                        var errors = new Array<string>();
+                        let retries = 3;
+                        let success = false;
+                        let attempts = 0;
+                        let errors = new Array<string>();
 
                         while (retries-- > 0 && success === false) {
                             attempts++;
                             console.log(`Sending preview: Attempt ${attempts} of ${attempts + retries}`);
-                            await api.campaigns.sendPreview(campaignId, previewDetails, (err, res) => {
-                                if (err) {
-                                    var errorMessage = getErrorMessage(err);
-                                    console.log(err);
-                                    tl.warning(`Failed to send preview, retrying in 5 seconds...`);
-                                    errors.push(errorMessage);
-                                    sleep(5000);
-                                } else {
-                                    console.log(`Preview sent`);
-                                    success = true;
-                                    resolve(campaignId);
-                                }
+                            await sendPreview(api, campaignId, parsedRecipients).then(data => {
+                                resolve(campaignId);
+                                success = true;
+                            }).catch(reason => {
+                                tl.warning(`Failed to send preview, retrying in 5 seconds...`);
+                                sleep(5000);
+                                errors.push(reason);
                             });
                         }
 
-                        // Failed
-                        tl.warning(`The campaign was created successfully, but sending the preview failed.`);
-
                         // manually set the output variable
                         tl.setVariable("CampaignMonitorCampaignId", campaignId);
+
+                        tl.warning(`The campaign was created successfully, but sending the preview failed.`);
                         reject(errors.join(", "));
+
                     } else {
                         resolve(campaignId);
                     }
