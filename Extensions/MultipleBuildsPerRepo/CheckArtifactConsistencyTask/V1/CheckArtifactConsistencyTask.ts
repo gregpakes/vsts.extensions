@@ -4,7 +4,7 @@ import * as util from "./UtilFunctions";
 import * as webApi from "azure-devops-node-api/WebApi";
 import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
 import { IBuildApi } from "azure-devops-node-api/BuildApi";
-import { Change, BuildResult } from "azure-devops-node-api/interfaces/BuildInterfaces";
+import { Change, BuildResult, BuildStatus } from "azure-devops-node-api/interfaces/BuildInterfaces";
 import { GitStatus } from "azure-devops-node-api/interfaces/GitInterfaces";
 import { IGitApi } from "azure-devops-node-api/GitApi";
 import { GitPullRequestQuery, GitPullRequestQueryInput, GitPullRequestQueryType, GitPullRequest } from "azure-devops-node-api/interfaces/GitInterfaces";
@@ -141,7 +141,21 @@ async function run(): Promise<number>  {
                         }
 
                         console.log(`\t - Found: ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber}`);
+
+                        // Check the build status
+                        if (buildFromStatus.status !== 2) { // Completed
+                            var statusOfBuild = BuildStatus[buildFromStatus.status];
+                            console.log(`\t - Status: ${statusOfBuild}`);
+                            reject(`Detected build with status ${statusOfBuild}`);
+                            return;
+                        }
+
                         var buildResult = BuildResult[buildFromStatus.result];
+                        if (!buildResult) {
+                            reject(`Failed to parse the build result [${buildFromStatus.result}]... failing`);
+                            return;
+                        }
+
                         console.log(`\t - Status: ${buildResult}`);
 
                         if (buildFromStatus.result === 8 || buildFromStatus.result === 0) {
