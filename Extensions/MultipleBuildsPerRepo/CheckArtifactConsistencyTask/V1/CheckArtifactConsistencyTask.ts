@@ -113,6 +113,11 @@ async function run(): Promise<number>  {
                         var buildStatus = buildStatuses[i];
                         var buildFromStatus = await util.getBuildFromTargetUrl(buildApi, buildStatus.targetUrl, build.project.name);
 
+                        if(buildFromStatus.message) {
+                            console.log(`\t - Error fetching build ${buildStatus.targetUrl}: ${buildFromStatus.message}`);
+                            continue;
+                        }
+
                         // Check that this build definition is actually an artifact
                         if (!util.buildDefinitionExistsInArtifacts(buildFromStatus.definition.id, artifactsInThisRelease)) {
                             console.log(`\t - Skipping build definition ${buildFromStatus.definition.name} - ${buildFromStatus.buildNumber} as it is not an artifact in this release.`);
