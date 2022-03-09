@@ -103,12 +103,12 @@ var ensureTool = function (name, versionArgs, validate) {
         var result = shell.exec(name + ' ' + versionArgs);
         console.log(result);
         if (typeof validate == 'string') {
-            if (result.output.trim() != validate) {
+            if (result.stdout.trim() != validate) {
                 fail('expected version: ' + validate);
             }
         }
         else {
-            validate(result.output.trim());
+            validate(result.stdout.trim());
         }
     }
 
@@ -209,7 +209,8 @@ var buildSingleTask = function(taskName, taskPath, outDir){
         if (test('-f', path.join(taskPath, "tslint.json"))){
             try{
                 console.log(`Starting lint`);
-                run(`npx tslint -c tslint.json *.ts test/*.ts`,  { env: process.env, cwd: taskPath, stdio: 'inherit' })
+                run(`npx eslint -c .eslintrc.js --ext .ts`, { env: process.env, cwd: taskPath, stdio: 'inherit' })
+                //run(`npx tslint -c tslint.json *.ts test/*.ts`,  { env: process.env, cwd: taskPath, stdio: 'inherit' })
             }catch(error){
                 fail(error);
             }
