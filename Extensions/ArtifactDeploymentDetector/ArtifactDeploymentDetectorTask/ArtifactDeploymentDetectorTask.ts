@@ -1,10 +1,10 @@
 var path = require("path");
-import tl = require("vsts-task-lib/task");
-require("vso-node-api");
-import * as vstsInterfaces from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import { Artifact, ReleaseExpands, DeploymentStatus, ApprovalFilters, DeploymentOperationStatus, ReleaseQueryOrder, ReleaseStatus } from "vso-node-api/interfaces/ReleaseInterfaces";
-import * as webApi from "vso-node-api/WebApi";
-import { IReleaseApi } from "vso-node-api/ReleaseApi";
+import tl = require("azure-pipelines-task-lib/task");
+require("azure-devops-node-api");
+import * as vstsInterfaces from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
+import { Artifact, ReleaseExpands, DeploymentStatus, ApprovalFilters, DeploymentOperationStatus, ReleaseQueryOrder, ReleaseStatus } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import * as webApi from "azure-devops-node-api/WebApi";
+import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
 import { release } from "os";
 // npm install vsts-task-lib
 
