@@ -1,4 +1,4 @@
-import tl = require("vsts-task-lib/task");
+import tl = require("azure-pipelines-task-lib/task");
 import * as vstsInterfaces from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 import * as util from "./UtilFunctions";
 import * as webApi from "azure-devops-node-api/WebApi";
@@ -50,8 +50,8 @@ function publishEvent(feature, properties: any): void {
     }
 }
 
-async function run(): Promise<number>  {
-    var promise = new Promise<number>(async (resolve, reject) => {
+async function run(): Promise<void>  {
+    var promise = new Promise<void>(async (resolve, reject) => {
 
         try {
             let tpcUri = tl.getVariable("System.TeamFoundationCollectionUri");
@@ -80,7 +80,7 @@ async function run(): Promise<number>  {
 
                 var buildId = artifact.definitionReference.version.id;
 
-                var build = await buildApi.getBuild(parseInt(buildId), teamProject);
+                var build = await buildApi.getBuild(teamProject, parseInt(buildId));
 
                 if (build) {
                     console.log(`\tBuild ${build.buildNumber} was built from commit: ${build.sourceVersion}`);

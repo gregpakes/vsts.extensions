@@ -52,8 +52,8 @@ function getErrorMessage(err): string {
     return err;
 }
 
-async function sendPreview(api: any, campaignId: string, recipients: string[]): Promise<any> {
-    return new Promise<any>(async (resolve, reject) => {
+async function sendPreview(api: any, campaignId: string, recipients: string[]): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
 
         var previewDetails = {
             "PreviewRecipients": recipients,

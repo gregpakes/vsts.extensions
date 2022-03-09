@@ -1,4 +1,4 @@
-import tl = require("vsts-task-lib/task");
+import tl = require("azure-pipelines-task-lib/task");
 const createsend = require("createsend-node");
 var taskJson = require("./task.json");
 

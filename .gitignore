@@ -33,3 +33,4 @@ node_modules
 Extensions/**/*.js
 Extensions/**/*.js.map
 yarn-error.log
+!Extensions/**/.eslintrc.js

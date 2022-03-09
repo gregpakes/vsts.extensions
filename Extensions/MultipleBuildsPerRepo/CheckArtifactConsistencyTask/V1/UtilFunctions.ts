@@ -1,4 +1,4 @@
-import tl = require("vsts-task-lib/task");
+import tl = require("azure-pipelines-task-lib/task");
 import * as webApi from "azure-devops-node-api/WebApi";
 import { IRequestHandler } from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 import { Artifact } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
@@ -33,7 +33,7 @@ export function getBuildArtifacts(artifacts: Artifact[]): Artifact[] {
 export async function getBuildFromTargetUrl(buildApi: IBuildApi, targetUrl: string, project: string): Promise<Build> {
     // Extract the build Id
     var buildId: number = parseInt(targetUrl.substring((targetUrl.lastIndexOf("/") + 1), targetUrl.length));
-    return await buildApi.getBuild(buildId, project);
+    return await buildApi.getBuild(project, buildId);
 }
 
 export function buildDefinitionExistsInArtifacts(buildDefinitionId: number, artifacts: Artifact[]): boolean {
@@ -67,7 +67,7 @@ export async function isBuildNewerThanArtifact(gitApi: IGitApi, buildApi: IBuild
                 if (parseInt(artifact.definitionReference.definition.id) === build.definition.id) {
                     // We have found the definition
                     var artifactBuildId = artifact.definitionReference.version.id;
-                    var artifactBuild = await buildApi.getBuild(parseInt(artifactBuildId), artifact.definitionReference.project.name);
+                    var artifactBuild = await buildApi.getBuild(artifact.definitionReference.project.name, parseInt(artifactBuildId));
 
                     var buildCommitPromise = gitApi.getCommit(build.sourceVersion, build.repository.id, build.project.name);
                     var artifactCommitPromise = gitApi.getCommit(artifactBuild.sourceVersion, artifactBuild.repository.id, artifactBuild.project.name);

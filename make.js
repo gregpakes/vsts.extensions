@@ -20,7 +20,7 @@ var path = require('path');
 var util = require('./make-util');
 var semver = require('semver');
 var ToolRunner = require('vsts-task-lib/toolrunner');
-const semverRegex = require('semver-regex');
+const semverRegex = import('semver-regex');
 
 var banner = util.banner;
 var miniBanner = util.miniBanner;
